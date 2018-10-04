@@ -117,7 +117,7 @@ close_conexao($con);
             <span>Estoque</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="os.php">
             <i class="fas fa-fw fa-tags"></i>
             <span>Ordens de Serviço</span></a>
         </li>

@@ -1,4 +1,14 @@
-<!DOCTYPE html>
+<?php
+  //verifica sessão, se está logado 
+//session_start();
+//if (!isset($_SESSION['user'])) //AND (!isset($_SESSION[nome])) ) 
+//Header("Location: index.html");
+
+require_once 'conexao.php';
+$con = open_conexao();
+$rs = mysqli_query($con,"select * from os;"); //rs=record set (conjunto de registros)
+close_conexao($con);
+?>
 <html lang="en">
 
   <head>
@@ -8,6 +18,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    
 
     <title>SB Admin - Tables</title>
 
@@ -96,7 +107,7 @@
             <span>Dashboard</span>
           </a>
         </li>
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="clientes.php">
             <i class="fas fa-fw fa-user-alt"></i>
             <span>Clientes</span></a>
@@ -106,7 +117,7 @@
             <i class="fas fa-fw fa-boxes"></i>
             <span>Estoque</span></a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link" href="os.php">
             <i class="fas fa-fw fa-tags"></i>
             <span>Ordens de Serviço</span></a>
@@ -127,70 +138,60 @@
             <li class="breadcrumb-item">
               <a href="index.html">Dashboard</a>
             </li>
-            <li class="breadcrumb-item">
-              <a href="clientes.php">Clientes</a>
-            </li>
-            <li class="breadcrumb-item active">Adicionar Cliente</li>
+            <li class="breadcrumb-item active">Ordens de Serviço</li>
           </ol>
 
-
+          <a class="btn btn-success" href="cados.php"> <i class="ion-plus-round"></i> Adicionar Ordens de Serviço</a>
+          <br>
+          <br>
           <!-- DataTables Example -->
-          <form data-toggle="validator" method="post" action="valCadCli.php">
+          <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
           <div class="card mb-3">
             <div class="card-header">
-              <i class="fas fa-user-alt"></i>
-              Adicionar Cliente</div>
+              <i class="fas fa-tags"></i>
+              Ordens de Serviço</div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
-                  <div class="col-sm-4">
-                      <label>Nome<span class="required">*</span></label>
-                      <input type="text" class="form-control" name="idNome">
-                    </div>
-                    <div class="col-sm-4">
-                        <label>CPF/CNPJ<span class="required">*</span></label>
-                        <input type="text" class="form-control" name="idCpf">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>Telefone</label>
-                        <input type="text" class="form-control" name="idTel">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>Celular<span class="required">*</span></label>
-                        <input type="text" class="form-control" name="idCel">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>Email</label>
-                        <input type="text" class="form-control" name="idEmail">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>CEP</label>
-                        <input type="text" class="form-control" name="idCep">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>Rua<span class="required">*</span></label>
-                        <input type="text" class="form-control" name="idRua">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>Numero<span class="required">*</span></label>
-                        <input type="text" class="form-control" name="idNum">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>Bairro<span class="required">*</span></label>
-                        <input type="text" class="form-control" name="idBai">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>Cidade<span class="required">*</span></label>
-                        <input type="text" class="form-control" name="idCid">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>Estado<span class="required">*</span></label>
-                        <input type="text" class="form-control" name="idEst">
-                      </div>
-                      <br>
-                      <input type="submit" class="btn btn-outline-success" value="Cadastrar"/>
-                    </form>
+                  <div class="row col-md-7">
+          <table  class="table table-striped">
+            <tr>
+             <th widht="80" align="right">#</th>
+             <th widht="80" align="right">Cliente</th>
+             <th widht="80" align="right">Defeito</th>
+             <th widht="80" align="center">Status</th>
+
+             <th></th>
+             <th></th>
+           </tr>
+           <?php while ($row = mysqli_fetch_array($rs)) { ?> 
+           <tr>
+             
+
+            <td><?php echo $row['id'] ?></td>
+            <td><?php echo $row['idcliente'] ?></td>
+            <td><?php echo $row['defeito'] ?></td>
+            <td><?php echo $row['status'] ?></td>
+
+            <td>
+              <button type="button" class="btn btn-warning"
+              onclick="javascript:location.href='../alterar/altCli.php?id=' 
+              + <?php echo $row['id'] ?> ">
+              <span class="ion-edit" aria-hidden="true"></span>
+            </button>                 
+          </td>  
+          <td>
+            <button type="button" class="btn btn-danger"
+            onclick="javascript:location.href='../remover/remCli.php?id=' 
+            + <?php echo $row['id'] ?> ">
+            <span class="ion-trash-a" aria-hidden="true"></span>
+          </button>                 
+        </td>                    
+      </tr>
+      <?php 
+    } ?>
+           
                   </tbody>
                 </table>
               </div>

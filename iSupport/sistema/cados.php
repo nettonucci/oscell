@@ -8,6 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 
     <title>SB Admin - Tables</title>
 
@@ -40,7 +45,7 @@
       <!-- Navbar Search -->
       <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
         <div class="input-group">
-          
+
           </div>
         </div>
       </form>
@@ -96,7 +101,7 @@
             <span>Dashboard</span>
           </a>
         </li>
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="clientes.php">
             <i class="fas fa-fw fa-user-alt"></i>
             <span>Clientes</span></a>
@@ -106,7 +111,7 @@
             <i class="fas fa-fw fa-boxes"></i>
             <span>Estoque</span></a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link" href="os.php">
             <i class="fas fa-fw fa-tags"></i>
             <span>Ordens de Serviço</span></a>
@@ -128,9 +133,9 @@
               <a href="index.html">Dashboard</a>
             </li>
             <li class="breadcrumb-item">
-              <a href="clientes.php">Clientes</a>
+              <a href="os.php">Ordens de Serviço</a>
             </li>
-            <li class="breadcrumb-item active">Adicionar Cliente</li>
+            <li class="breadcrumb-item active">Adicionar OS</li>
           </ol>
 
 
@@ -138,56 +143,40 @@
           <form data-toggle="validator" method="post" action="valCadCli.php">
           <div class="card mb-3">
             <div class="card-header">
-              <i class="fas fa-user-alt"></i>
-              Adicionar Cliente</div>
+              <i class="fas fa-tags"></i>
+              Adicionar OS</div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
-                  <div class="col-sm-4">
-                      <label>Nome<span class="required">*</span></label>
+                  <nav>
+              <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Detalhes da OS</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
+            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
+          </div>
+          </nav>
+          <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+          <br>
+          <br>
+                    <div class="col-sm-4">
+                      <label>Cliente<span class="required">*</span></label>
                       <input type="text" class="form-control" name="idNome">
                     </div>
-                    <div class="col-sm-4">
+                  
+                  </div>
+          <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"><div class="col-sm-4">
                         <label>CPF/CNPJ<span class="required">*</span></label>
                         <input type="text" class="form-control" name="idCpf">
-                      </div>
-                      <div class="col-sm-4">
+                      </div></div>
+          <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab"><div class="col-sm-4">
                         <label>Telefone</label>
                         <input type="text" class="form-control" name="idTel">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>Celular<span class="required">*</span></label>
-                        <input type="text" class="form-control" name="idCel">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>Email</label>
-                        <input type="text" class="form-control" name="idEmail">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>CEP</label>
-                        <input type="text" class="form-control" name="idCep">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>Rua<span class="required">*</span></label>
-                        <input type="text" class="form-control" name="idRua">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>Numero<span class="required">*</span></label>
-                        <input type="text" class="form-control" name="idNum">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>Bairro<span class="required">*</span></label>
-                        <input type="text" class="form-control" name="idBai">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>Cidade<span class="required">*</span></label>
-                        <input type="text" class="form-control" name="idCid">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>Estado<span class="required">*</span></label>
-                        <input type="text" class="form-control" name="idEst">
-                      </div>
+                      </div></div>
+          </div>
+                  
+                  
                       <br>
                       <input type="submit" class="btn btn-outline-success" value="Cadastrar"/>
                     </form>
@@ -198,7 +187,7 @@
             <div class="card-footer small text-muted"> </div>
           </div>
 
-         
+
 
         </div>
         <!-- /.container-fluid -->
