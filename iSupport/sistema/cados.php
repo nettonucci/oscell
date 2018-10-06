@@ -140,9 +140,9 @@
 
 
           <!-- DataTables Example -->
-          <form data-toggle="validator" method="post" action="valCadCli.php">
+          <form data-toggle="validator" method="post" action="valCadOS.php">
           <div class="card mb-3">
-            <div class="card-header">
+            <div class="card-header"
               <i class="fas fa-tags"></i>
               Adicionar OS</div>
             <div class="card-body">
@@ -151,34 +151,53 @@
                   <thead>
                   <nav>
               <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Detalhes da OS</a>
-            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
-            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
+              <a class="nav-item nav-link active" id="nav-det-tab" data-toggle="tab" href="#nav-det" role="tab" aria-controls="nav-det" aria-selected="true">Detalhes da OS</a>
           </div>
           </nav>
           <div class="tab-content" id="nav-tabContent">
-          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-          <br>
-          <br>
+          <div class="tab-pane fade show active" id="nav-det" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <br>
+                    <br>
+                    <div class="col-sm-4">
+                    <label>Status<span class="required">*</span></label>
+                    <br>
+                      <select class="form-control" name="idstatus" id="status" value="">
+                        <option value="Orçamento">Orçamento</option>
+                        <option value="Aberto">Aberto</option>
+                        <option value="Em Andamento">Em Andamento</option>
+                        <option value="Finalizado">Finalizado</option>
+                        <option value="Cancelado">Cancelado</option>
+                      </select>
+                    </div>
+                    <br>
                     <div class="col-sm-4">
                       <label>Cliente<span class="required">*</span></label>
-                      <input type="text" class="form-control" name="idNome">
+                      <input type="text" class="form-control" name="idcli">
                     </div>
-                  
-                  </div>
-          <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"><div class="col-sm-4">
-                        <label>CPF/CNPJ<span class="required">*</span></label>
-                        <input type="text" class="form-control" name="idCpf">
-                      </div></div>
-          <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab"><div class="col-sm-4">
-                        <label>Telefone</label>
-                        <input type="text" class="form-control" name="idTel">
-                      </div></div>
-          </div>
-                  
-                  
-                      <br>
+                    <br>
+                    <div class="col-sm-4">
+                      <label>Data de entrada<span class="required">*</span></label>
+                      <input type="text" class="form-control" name="iddataent" value="<?php echo date('d/m/Y'); ?>">
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
+                      <label>Descrição Produto<span class="required">*</span></label>
+                       <textarea class="span6" name="iddesc" id="descricaoProduto" cols="69" rows="5"></textarea>
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
+                      <label for="defeito">Defeito</label>
+                        <textarea class="span6" name="iddef" id="defeito" cols="69" rows="5"></textarea>
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
+                      <label for="defeito">Observações</label>
+                        <textarea class="span6" name="idobs" id="defeito" cols="69" rows="5"></textarea>
+                    </div>
+
+                    <br>
                       <input type="submit" class="btn btn-outline-success" value="Cadastrar"/>
+                  </div>
                     </form>
                   </tbody>
                 </table>

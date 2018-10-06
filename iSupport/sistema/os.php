@@ -20,7 +20,7 @@ close_conexao($con);
     <meta name="author" content="">
     
 
-    <title>SB Admin - Tables</title>
+    <title>Sistema Nucci</title>
 
     <!-- Bootstrap core CSS-->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -161,6 +161,8 @@ close_conexao($con);
              <th widht="80" align="right">Cliente</th>
              <th widht="80" align="right">Defeito</th>
              <th widht="80" align="center">Status</th>
+             <th widht="80" align="center">Entrada</th>
+             <th widht="80" align="center"> </th>
 
              <th></th>
              <th></th>
@@ -173,16 +175,26 @@ close_conexao($con);
             <td><?php echo $row['idcliente'] ?></td>
             <td><?php echo $row['defeito'] ?></td>
             <td><?php echo $row['status'] ?></td>
+            <td><?php echo $row['dataentrada'] ?></td>
 
             <td>
-              <button type="button" class="btn btn-warning"
-              onclick="javascript:location.href='../alterar/altCli.php?id=' 
+              <button type="button" class="btn btn-warning" title="Editar OS"
+              onclick="javascript:location.href='editos.php?id=' 
               + <?php echo $row['id'] ?> ">
               <span class="ion-edit" aria-hidden="true"></span>
             </button>                 
           </td>  
+
+            <td>
+              <button type="button" class="btn btn-info" title="Visualizar OS"
+              onclick="javascript:location.href='editos.php?id=' 
+              + <?php echo $row['id'] ?> ">
+              <span class="ion-eye" aria-hidden="true"></span>
+            </button>                 
+          </td>  
+
           <td>
-            <button type="button" class="btn btn-danger"
+            <button type="button" class="btn btn-danger" title="Deletar OS"
             onclick="javascript:location.href='../remover/remCli.php?id=' 
             + <?php echo $row['id'] ?> ">
             <span class="ion-trash-a" aria-hidden="true"></span>

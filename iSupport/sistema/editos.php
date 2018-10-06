@@ -1,4 +1,29 @@
 <?php
+require_once 'conexao.php'; 
+
+$con = open_conexao(); 
+//selectDb(); 
+   //recuperar valor passado por get
+$id = trim($_REQUEST['id']);
+    //buscar no banco de dados
+$rs = mysqli_query($con, "SELECT * FROM os WHERE id=".$id);
+
+$row = mysqli_fetch_array($rs); 
+$cli = $row['idcliente']; 
+$sta = $row['status'];
+$dte = $row['dataentrada']; 
+$dts = $row['datasaida'];
+$eqp = $row['equipamento'];
+$def = $row['defeito'];
+$obs = $row['obs']; 
+$lau = $row['laudo'];
+$prod = $row['idproduto'];
+$qtdp = $row['qtdproduto'];
+close_conexao($con); 
+
+?>
+
+<?php
   //verifica sessão, se está logado 
 //session_start();
 //if (!isset($_SESSION['user'])) //AND (!isset($_SESSION[nome])) ) 
@@ -6,9 +31,10 @@
 
 require_once 'conexao.php';
 $con = open_conexao();
-$rs = mysqli_query($con,"select * from clientes;"); //rs=record set (conjunto de registros)
+$rs = mysqli_query($con,"SELECT * FROM maoobra INNER JOIN os ON (maoobra.idos = os.id) WHERE os.id =".$id); //rs=record set (conjunto de registros)
 close_conexao($con);
 ?>
+<!DOCTYPE html>
 <html lang="en">
 
   <head>
@@ -18,6 +44,11 @@ close_conexao($con);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 
     <title>SB Admin - Tables</title>
 
@@ -50,7 +81,7 @@ close_conexao($con);
       <!-- Navbar Search -->
       <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
         <div class="input-group">
-          
+
           </div>
         </div>
       </form>
@@ -106,7 +137,7 @@ close_conexao($con);
             <span>Dashboard</span>
           </a>
         </li>
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="clientes.php">
             <i class="fas fa-fw fa-user-alt"></i>
             <span>Clientes</span></a>
@@ -116,7 +147,7 @@ close_conexao($con);
             <i class="fas fa-fw fa-boxes"></i>
             <span>Estoque</span></a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link" href="os.php">
             <i class="fas fa-fw fa-tags"></i>
             <span>Ordens de Serviço</span></a>
@@ -137,70 +168,119 @@ close_conexao($con);
             <li class="breadcrumb-item">
               <a href="index.html">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Clientes</li>
+            <li class="breadcrumb-item">
+              <a href="os.php">Ordens de Serviço</a>
+            </li>
+            <li class="breadcrumb-item active">Editar OS</li>
           </ol>
 
-          <a class="btn btn-success" href="cadcli.php"> <i class="ion-plus-round"></i> Adicionar Cliente</a>
-          <br>
-          <br>
+
           <!-- DataTables Example -->
-          <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+          <form data-toggle="validator" method="post" action="valCadCli.php">
           <div class="card mb-3">
-            <div class="card-header">
-              <i class="fas fa-user-alt"></i>
-              Clientes</div>
+            <div class="card-header"
+              <i class="fas fa-tags"></i>
+              Editar OS</div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
-                  <div class="row col-md-7">
-          <table  class="table table-striped">
-            <tr>
-             <th widht="300" align="right">Nome</th>
-             <th widht="80" align="right">Endereco</th>
-             <th widht="80" align="right">Telefone</th>
-             <th widht="80" align="center">CPF</th>
-             <th widht="80" align="center"> </th>
+                  <nav>
+              <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <a class="nav-item nav-link active" id="nav-det-tab" data-toggle="tab" href="#nav-det" role="tab" aria-controls="nav-det" aria-selected="true">Detalhes da OS</a>
+              <a class="nav-item nav-link" id="nav-laudo-tab" data-toggle="tab" href="#nav-laudo" role="tab" aria-controls="nav-laudo" aria-selected="true">Laudo</a>
+              <a class="nav-item nav-link" id="nav-pec-tab" data-toggle="tab" href="#nav-pec" role="tab" aria-controls="nav-pec" aria-selected="true">Peças</a>
+              <a class="nav-item nav-link" id="nav-serv-tab" data-toggle="tab" href="#nav-serv" role="tab" aria-controls="nav-serv" aria-selected="true">Serviços</a>
+          </div>
+          </nav>
+          <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="nav-det" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <br>
+                    <br>
+                    <div class="col-sm-4">
+                    <label>Status</label>
+                    <br>
+                    <input type="text" class="form-control" name="idNome" value="<?php echo $sta?>" disabled>
+                      <select class="form-control" name="status" id="status"><?=$sta?>
+                        <option>--</option>
+                        <option value="Orçamento">Orçamento</option>
+                        <option value="Aberto">Aberto</option>
+                        <option value="Em Andamento">Em Andamento</option>
+                        <option value="Finalizado">Finalizado</option>
+                        <option value="Cancelado">Cancelado</option>
+                      </select>
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
+                      <label>Cliente</label>
+                      <input type="text" class="form-control" name="idNome" value="<?php echo $cli?>" disabled>
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
+                      <label>Data de entrada</label>
+                      <input type="text" class="form-control" name="idNome" value="<?php echo $dte?>" disabled>
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
+                      <label>Descrição Produto</label>
+                       <textarea class="span6" name="descricaoProduto" id="descricaoProduto" cols="69" rows="5"><?=$eqp?></textarea>
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
+                      <label for="defeito">Defeito</label>
+                        <textarea class="span6" name="defeito" id="defeito" cols="69" rows="5"><?=$def?></textarea>
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
+                      <label for="Obs">Observações</label>
+                        <textarea class="span6" name="defeito" id="defeito" cols="69" rows="5"><?=$obs?></textarea>
+                    </div>
+                  </div>
 
-             <th></th>
-             <th></th>
-           </tr>
-           <?php while ($row = mysqli_fetch_array($rs)) { ?> 
-           <tr>
-             
+                  <div class="tab-pane fade show" id="nav-laudo" role="tabpanel" aria-labelledby="nav-home-tab">
+                  <br>
+                    <div class="col-sm-4">
+                      <label for="defeito">Laudo</label>
+                        <textarea class="span6" name="defeito" id="defeito" cols="150" rows="20"><?=$lau?></textarea>
+                    </div>
 
-            <td><?php echo $row['nome'] ?></td>
-            <td><?php echo $row['rua'] ?></td>
-            <td><?php echo $row['telefone'] ?></td>
-            <td><?php echo $row['cpf'] ?></td>
+                    </div>
 
-            <td>
-              <button type="button" class="btn btn-warning" title="Editar cliente"
-              onclick="javascript:location.href='#?id=' 
-              + <?php echo $row['id'] ?> ">
-              <span class="ion-edit" aria-hidden="true"></span>
-            </button>                 
-          </td>  
-
-            <td>
-              <button type="button" class="btn btn-info" title="Visualizar cliente"
-              onclick="javascript:location.href='visucli.php?id=' 
-              + <?php echo $row['id'] ?> ">
-              <span class="ion-eye" aria-hidden="true"></span>
-            </button>                 
-          </td>  
-
-          <td>
-            <button type="button" class="btn btn-danger" title="Remover cliente"
-            onclick="javascript:location.href='../remover/remCli.php?id=' 
-            + <?php echo $row['id'] ?> ">
-            <span class="ion-trash-a" aria-hidden="true"></span>
-          </button>                 
-        </td>                    
-      </tr>
-      <?php 
-    } ?>
-           
+                  <div class="tab-pane fade show" id="nav-pec" role="tabpanel" aria-labelledby="nav-home-tab">
+                  <br>
+                    <div class="col-sm-4">
+                      <label>Peça utilizada</label>
+                      <input type="text" class="form-control" name="idNome" value="<?php echo $prod?>">
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
+                      <label>Quantidade</label>
+                      <input type="text" class="form-control" name="idNome" value="<?php echo $qtdp?>">
+                    </div>
+                    <br>
+                    <a class="btn btn-success" href="#"> <i class="ion-plus-round"></i> Adicionar</a>
+                    </div>
+                  <div class="tab-pane fade show" id="nav-serv" role="tabpanel" aria-labelledby="nav-home-tab">
+                  <br>
+                    <div class="col-sm-4">
+                      <label>Serviço realizado</label>
+                      <input type="text" class="form-control" name="servico">
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
+                      <label>Valor</label>
+                      <input type="text" class="form-control" name="valor">
+                    </div>
+                    
+                    <br>
+                    <a class="btn btn-success" href="#"> <i class="ion-plus-round"></i> Adicionar</a>
+                    <br>
+                    <br>
+                    
+                       
+                  </div>
+                  
+                    </form>
                   </tbody>
                 </table>
               </div>
@@ -208,7 +288,7 @@ close_conexao($con);
             <div class="card-footer small text-muted"> </div>
           </div>
 
-         
+
 
         </div>
         <!-- /.container-fluid -->
