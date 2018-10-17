@@ -106,12 +106,12 @@ close_conexao($con);
             <span>Dashboard</span>
           </a>
         </li>
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="clientes.php">
             <i class="fas fa-fw fa-user-alt"></i>
             <span>Clientes</span></a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link" href="#">
             <i class="fas fa-fw fa-boxes"></i>
             <span>Estoque</span></a>

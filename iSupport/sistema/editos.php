@@ -6,7 +6,7 @@ $con = open_conexao();
    //recuperar valor passado por get
 $id = trim($_REQUEST['id']);
     //buscar no banco de dados
-$rs = mysqli_query($con, "SELECT * FROM os WHERE id=".$id);
+$rs = mysqli_query($con, "SELECT * FROM os INNER JOIN clientes ON (os.idcliente = clientes.id) WHERE os.id=".$id);
 
 $row = mysqli_fetch_array($rs); 
 $cli = $row['idcliente']; 
@@ -19,6 +19,8 @@ $obs = $row['obs'];
 $lau = $row['laudo'];
 $prod = $row['idproduto'];
 $qtdp = $row['qtdproduto'];
+$nome = $row['nome'];
+
 close_conexao($con); 
 
 ?>
@@ -31,9 +33,11 @@ close_conexao($con);
 
 require_once 'conexao.php';
 $con = open_conexao();
-$rs = mysqli_query($con,"SELECT * FROM maoobra INNER JOIN os ON (maoobra.idos = os.id) WHERE os.id =".$id); //rs=record set (conjunto de registros)
+$rs1 = mysqli_query($con,"SELECT * FROM maoobra INNER JOIN os ON (maoobra.idos = os.id) WHERE os.id =".$id); //rs=record set (conjunto de registros)
+$rs2 = mysqli_query($con,"SELECT * FROM ospeca INNER JOIN os ON (ospeca.idos = os.id) INNER JOIN estoque ON(ospeca.idpeca = estoque.id) WHERE os.id=".$id); //rs=record set (conjunto de registros)
 close_conexao($con);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -183,7 +187,8 @@ close_conexao($con);
               Editar OS</div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+               
+               
                   <thead>
                   <nav>
               <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -191,6 +196,7 @@ close_conexao($con);
               <a class="nav-item nav-link" id="nav-laudo-tab" data-toggle="tab" href="#nav-laudo" role="tab" aria-controls="nav-laudo" aria-selected="true">Laudo</a>
               <a class="nav-item nav-link" id="nav-pec-tab" data-toggle="tab" href="#nav-pec" role="tab" aria-controls="nav-pec" aria-selected="true">Peças</a>
               <a class="nav-item nav-link" id="nav-serv-tab" data-toggle="tab" href="#nav-serv" role="tab" aria-controls="nav-serv" aria-selected="true">Serviços</a>
+              <a class="nav-item nav-link" id="nav-total-tab" data-toggle="tab" href="#nav-total" role="tab" aria-controls="nav-total" aria-selected="true">Total</a>
           </div>
           </nav>
           <div class="tab-content" id="nav-tabContent">
@@ -213,7 +219,7 @@ close_conexao($con);
                     <br>
                     <div class="col-sm-4">
                       <label>Cliente</label>
-                      <input type="text" class="form-control" name="idNome" value="<?php echo $cli?>" disabled>
+                      <input type="text" class="form-control" name="idNome" value="<?php echo $nome?>" disabled>
                     </div>
                     <br>
                     <div class="col-sm-4">
@@ -243,12 +249,11 @@ close_conexao($con);
                       <label for="defeito">Laudo</label>
                         <textarea class="span6" name="defeito" id="defeito" cols="150" rows="20"><?=$lau?></textarea>
                     </div>
-
                     </div>
 
                   <div class="tab-pane fade show" id="nav-pec" role="tabpanel" aria-labelledby="nav-home-tab">
-                  <br>
-                    <div class="col-sm-4">
+                   <br>
+                   <div class="col-sm-4">
                       <label>Peça utilizada</label>
                       <input type="text" class="form-control" name="idNome" value="<?php echo $prod?>">
                     </div>
@@ -259,10 +264,56 @@ close_conexao($con);
                     </div>
                     <br>
                     <a class="btn btn-success" href="#"> <i class="ion-plus-round"></i> Adicionar</a>
+                    <br>
+                    <br>
+
+
+                  <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <div class="row col-md-7">
+                      <table  class="table table-striped">
+                      <tr>
+                        <th widht="80" align="right">Peça</th>
+                        <th widht="80" align="right">Quantidade</th>
+                        <th widht="80" align="right">Valor</th>
+                        <th widht="80" align="center"> </th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                      <?php while ($row = mysqli_fetch_array($rs2)) { ?> 
+                      <tr>
+             
+                      <td><?php echo $row['descricao'] ?></td>
+                      <td><?php echo $row['quantidadeos'] ?></td>
+                      <td><?php echo $row['precovenda'] ?></td>
+
+                       <td>
+                          <button type="button" class="btn btn-danger" title="Deletar OS"
+                          onclick="javascript:location.href='../remover/remCli.php?id=' 
+                          + <?php echo $row['id'] ?> ">
+                          <span class="ion-trash-a" aria-hidden="true"></span>
+                          </button>                 
+                      </td>                    
+                      </tr>
+                      <?php 
+                        } ?>
+                      
+                      </div>
+                      </table>
                     </div>
+
+
+
+
+
+
+
+                  </div>
+
                   <div class="tab-pane fade show" id="nav-serv" role="tabpanel" aria-labelledby="nav-home-tab">
                   <br>
-                    <div class="col-sm-4">
+                  <div class="col-sm-4">
                       <label>Serviço realizado</label>
                       <input type="text" class="form-control" name="servico">
                     </div>
@@ -271,36 +322,75 @@ close_conexao($con);
                       <label>Valor</label>
                       <input type="text" class="form-control" name="valor">
                     </div>
-                    
                     <br>
                     <a class="btn btn-success" href="#"> <i class="ion-plus-round"></i> Adicionar</a>
                     <br>
                     <br>
-                    
-                       
-                  </div>
-                  
+
+
+
+
+
+
+                  <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <div class="row col-md-7">
+                      <table  class="table table-striped">
+                      <tr>
+                        <th widht="80" align="right">Serviço</th>
+                        <th widht="80" align="right">Valor</th>
+                        <th widht="80" align="center"> </th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                      <?php while ($row = mysqli_fetch_array($rs1)) { ?> 
+                      <tr>
+             
+                      <td><?php echo $row['servico'] ?></td>
+                      <td><?php echo $row['valor'] ?></td>
+
+                       <td>
+                          <button type="button" class="btn btn-danger" title="Deletar OS"
+                          onclick="javascript:location.href='../remover/remCli.php?id=' 
+                          + <?php echo $row['id'] ?> ">
+                          <span class="ion-trash-a" aria-hidden="true"></span>
+                          </button>                 
+                      </td>                    
+                      </tr>
+                      <?php 
+                        } ?>
+                      
+                      </div>
+                      </table>
+                    </div>
+                    </div>
+
+                    <div class="tab-pane fade show" id="nav-total" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                    </div>
+                  <br>
                     </form>
                   </tbody>
                 </table>
               </div>
             </div>
-            <div class="card-footer small text-muted"> </div>
           </div>
 
 
 
         </div>
         <!-- /.container-fluid -->
+        
 
         <!-- Sticky Footer -->
-        <footer class="sticky-footer">
+        <!-- <footer class="sticky-footer">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
               <span>Copyright © Studio BlueMind 2018</span>
             </div>
           </div>
-        </footer>
+        </footer> -->
 
       </div>
       <!-- /.content-wrapper -->

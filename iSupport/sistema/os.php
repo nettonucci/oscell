@@ -6,7 +6,7 @@
 
 require_once 'conexao.php';
 $con = open_conexao();
-$rs = mysqli_query($con,"select * from os;"); //rs=record set (conjunto de registros)
+$rs = mysqli_query($con,"SELECT * FROM os INNER JOIN clientes ON (os.idcliente = clientes.id);"); //rs=record set (conjunto de registros)
 close_conexao($con);
 ?>
 <html lang="en">
@@ -144,6 +144,7 @@ close_conexao($con);
           <a class="btn btn-success" href="cados.php"> <i class="ion-plus-round"></i> Adicionar Ordens de Serviço</a>
           <br>
           <br>
+          
           <!-- DataTables Example -->
           <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
           <div class="card mb-3">
@@ -161,6 +162,7 @@ close_conexao($con);
              <th widht="80" align="right">Cliente</th>
              <th widht="80" align="right">Defeito</th>
              <th widht="80" align="center">Status</th>
+             <th widht="80" align="center">Equipamento</th>
              <th widht="80" align="center">Entrada</th>
              <th widht="80" align="center"> </th>
 
@@ -172,9 +174,10 @@ close_conexao($con);
              
 
             <td><?php echo $row['id'] ?></td>
-            <td><?php echo $row['idcliente'] ?></td>
+            <td><?php echo $row['nome'] ?></td>
             <td><?php echo $row['defeito'] ?></td>
             <td><?php echo $row['status'] ?></td>
+            <td><?php echo $row['equipamento'] ?></td>
             <td><?php echo $row['dataentrada'] ?></td>
 
             <td>

@@ -144,7 +144,7 @@
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
-                  <div class="col-sm-4">
+                    <div class="col-sm-4">
                       <label>Nome<span class="required">*</span></label>
                       <input type="text" class="form-control" name="idNome">
                     </div>
