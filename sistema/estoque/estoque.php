@@ -4,13 +4,11 @@
 //if (!isset($_SESSION['user'])) //AND (!isset($_SESSION[nome])) ) 
 //Header("Location: index.html");
 
-require_once 'conexao.php';
+require_once '../conexao.php';
 $con = open_conexao();
-$rs = mysqli_query($con,"select * from clientes;"); //rs=record set (conjunto de registros)
+$rs = mysqli_query($con,"select * from estoque;"); //rs=record set (conjunto de registros)
 close_conexao($con);
 ?>
-
-<!DOCTYPE html>
 <html lang="en">
 
   <head>
@@ -21,19 +19,19 @@ close_conexao($con);
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Sistema Nucci</title>
+    <title>Sistema - Nucci</title>
 
     <!-- Bootstrap core CSS-->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Page level plugin CSS-->
-    <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <link href="../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin.css" rel="stylesheet">
+    <link href="../css/sb-admin.css" rel="stylesheet">
 
     <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
 
@@ -103,23 +101,23 @@ close_conexao($con);
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="../index.html">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
           </a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="clientes.php">
+        <li class="nav-item">
+          <a class="nav-link" href="../clientes/clientes.php">
             <i class="fas fa-fw fa-user-alt"></i>
             <span>Clientes</span></a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link" href="estoque.php">
             <i class="fas fa-fw fa-boxes"></i>
             <span>Estoque</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="os.php">
+          <a class="nav-link" href="../os/os.php">
             <i class="fas fa-fw fa-tags"></i>
             <span>Ordens de Serviço</span></a>
         </li>
@@ -139,134 +137,62 @@ close_conexao($con);
             <li class="breadcrumb-item">
               <a href="index.html">Dashboard</a>
             </li>
-            <li class="breadcrumb-item">
-              <a href="clientes.php">Clientes</a>
-            </li>
-            <li class="breadcrumb-item active">Visualizar Cliente</li>
+            <li class="breadcrumb-item active">Estoque</li>
           </ol>
 
-
+          <a class="btn btn-success" href="cadpeca.php"> <i class="ion-plus-round"></i> Adicionar Peça</a>
+          <br>
+          <br>
           <!-- DataTables Example -->
+          <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
           <div class="card mb-3">
             <div class="card-header">
-              <i class="fas fa-user-alt"></i>
-              Visualizar Cliente
-
-            </div>
+              <i class="fas fa-boxes"></i>
+              Peças</div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
-                  
-                  <div id="accordion">
-                    <div class="card">
-    <div class="card-header" id="headingOne">
-      <h5 class="mb-0">
-        <button class="btn btn-link" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Dados Pessoais
-        </button>
-      </h5>
-    </div>
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-      <div class="card-body">
-      <div class="col-sm-4">
-                      <label>Nome</label> 
-                      <input type="text" class="form-control" name="idNome" disabled>
-                    </div>
-                    <br>
-                    <div class="col-sm-4">
-                        <label>CPF/CNPJ</label>
-                        <input type="text" class="form-control" name="idCpf" disabled>
-                      </div>
-                      
-      </div>
-    </div>
-  </div>
+                  <div class="row col-md-7">
+          <table  class="table table-striped">
+            <tr>
+             <th widht="300" align="right">Descrição</th>
+             <th widht="80" align="right">Preço de Compra</th>
+             <th widht="80" align="right">Preço de Venda</th>
+             <th widht="80" align="center">Quantidade</th>
 
-  <div class="card">
-    <div class="card-header" id="headingTwo">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-          Contatos
-        </button>
-      </h5>
-    </div>
-    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-      <div class="card-body">
-      
-        <div class="col-sm-4">
-          <label>Telefone</label>
-            <input type="text" class="form-control" name="idTel" disabled>
-        </div>
-        <br>
-        <div class="col-sm-4">
-          <label>Celular</label>
-            <input type="text" class="form-control" name="idCel" disabled>
-         </div>
-        <br>
-        <div class="col-sm-4">
-          <label>Email</label>
-            <input type="text" class="form-control" name="idEmail" disabled>
-        </div>
+             <th></th>
+             <th></th>
+           </tr>
+           <?php while ($row = mysqli_fetch_array($rs)) { ?> 
+           <tr>
+             
 
-      </div>
-    </div>
-  </div>
+            <td><?php echo $row['descricao'] ?></td>
+            <td>R$<?php echo $row['precocompra'] ?>,00</td>
+            <td>R$<?php echo $row['precovenda'] ?>,00</td>
+            <td><?php echo $row['quantidade'] ?></td>
 
-  <div class="card">
-    <div class="card-header" id="headingThree">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-          Endereço
-        </button>
-      </h5>
-    </div>
-    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-      <div class="card-body">
-      <div class="col-sm-4">
-                        <label>CEP</label>
-                        <input type="text" class="form-control" name="idCep" disabled>
-                      </div>
-                      <br>
-                      <div class="col-sm-4">
-                        <label>Rua</label>
-                        <input type="text" class="form-control" name="idRua" disabled>
-                      </div>
-                      <br>
-                      <div class="col-sm-4">
-                        <label>Numero</label>
-                        <input type="text" class="form-control" name="idNum" disabled>
-                      </div>
-                      <br>
-                      <div class="col-sm-4">
-                        <label>Bairro</label>
-                        <input type="text" class="form-control" name="idBai" disabled>
-                      </div>
-                      <br>
-                      <div class="col-sm-4">
-                        <label>Cidade</label>
-                        <input type="text" class="form-control" name="idCid" disabled>
-                      </div>
-                      <br>
-                      <div class="col-sm-4">
-                        <label>Estado</label>
-                        <input type="text" class="form-control" name="idEst" disabled>
-                      </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-                    </form>
-                  </tbody>
-                </table>
-                <td>
-              <button type="button" class="btn btn-warning" title="Editar cliente"
-              onclick="javascript:location.href='#?id=' 
+            <td>
+              <button type="button" class="btn btn-warning"
+              onclick="javascript:location.href='editPec.php?id=' 
               + <?php echo $row['id'] ?> ">
               <span class="ion-edit" aria-hidden="true"></span>
             </button>                 
-          </td> 
+          </td>  
+          <td>
+            <button type="button" class="btn btn-danger"
+            onclick="javascript:location.href='removPec.php?id=' 
+            + <?php echo $row['id'] ?> ">
+            <span class="ion-trash-a" aria-hidden="true"></span>
+          </button>                 
+        </td>                    
+      </tr>
+      <?php 
+    } ?>
+           
+                  </tbody>
+                </table>
               </div>
             </div>
             <div class="card-footer small text-muted"> </div>

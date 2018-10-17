@@ -1,6 +1,6 @@
 <?php
 function open_conexao(){
-    $conexao = mysqli_connect("localhost", "root", "", "banco");
+    $conexao = mysqli_connect("localhost", "root", "netto", "banco");
     if (!$conexao) {
         echo "Erro ao conectar no banco de dados....";
         exit;

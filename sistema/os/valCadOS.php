@@ -1,5 +1,5 @@
 <?php
-   require_once 'conexao.php'; 
+   require_once '../conexao.php'; 
 
    $status = trim($_POST['idstatus']); 
    $idcliente = trim($_POST['idcli']); 

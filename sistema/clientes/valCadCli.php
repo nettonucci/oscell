@@ -1,5 +1,5 @@
 <?php
-   require_once 'conexao.php'; 
+   require_once '../conexao.php'; 
 
    $nome = trim($_POST['idNome']); 
    $cpf = trim($_POST['idCpf']); 

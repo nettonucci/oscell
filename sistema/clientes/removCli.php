@@ -1,3 +1,30 @@
+<?php
+require_once '../conexao.php'; 
+
+$con = open_conexao(); 
+//selectDb(); 
+   //recuperar valor passado por get
+$id = trim($_REQUEST['id']);
+    //buscar no banco de dados
+$rs = mysqli_query($con, "select * from clientes where id=".$id);
+
+$row = mysqli_fetch_array($rs);
+$id = $row['id']; 
+$nome = $row['nome']; 
+$cpf = $row['cpf'];
+$tel = $row['telefone']; 
+$cel = $row['celular'];
+$email = $row['email'];
+$cep = $row['cep'];
+$rua = $row['rua']; 
+$num = $row['numero'];
+$bai = $row['bairro'];
+$cid = $row['cidade'];
+$est = $row['estado'];
+close_conexao($con); 
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,20 +35,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
-    <title>SB Admin - Tables</title>
+    <title>Sistema - Nucci</title>
 
     <!-- Bootstrap core CSS-->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Page level plugin CSS-->
-    <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <link href="../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin.css" rel="stylesheet">
+    <link href="../css/sb-admin.css" rel="stylesheet">
 
     <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
 
@@ -128,40 +160,131 @@
               <a href="index.html">Dashboard</a>
             </li>
             <li class="breadcrumb-item">
-              <a href="estoque.php">Estoque</a>
+              <a href="clientes.php">Clientes</a>
             </li>
-            <li class="breadcrumb-item active">Adicionar Peça</li>
+            <li class="breadcrumb-item active">Visualizar Cliente</li>
           </ol>
 
 
           <!-- DataTables Example -->
-          <form data-toggle="validator" method="post" action="valCadPec.php">
+          <form data-toggle="validator" method="post" action="valRemCli.php">
           <div class="card mb-3">
             <div class="card-header">
               <i class="fas fa-user-alt"></i>
-              Adicionar Peça</div>
+              Visualizar Cliente</div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
-                  <div class="col-sm-4">
-                      <label>Descrição<span class="required">*</span></label>
-                      <input type="text" class="form-control" name="idDes">
+                  
+                  <input type="hidden" name="id"  value="<?php echo $id?>">
+
+                  <div id="accordion">
+                    <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <i class="btn btn-link" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Dados Pessoais
+</i>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
+      <div class="col-sm-4">
+                      <label>Nome</label> 
+                      <input type="text" class="form-control" name="idNome" value="<?php echo $nome?>" disabled>
                     </div>
+                    <br>
                     <div class="col-sm-4">
-                        <label>Preço de compra<span class="required">*</span></label>
-                        <input type="text" class="form-control" name="idComp">
+                        <label>CPF/CNPJ</label>
+                        <input type="text" class="form-control" name="idCpf" value="<?php echo $cpf?>" disabled>
                       </div>
-                      <div class="col-sm-4">
-                        <label>Preço de venda<span class="required">*</span></label>
-                        <input type="text" class="form-control" name="idVend">
-                      </div>
-                      <div class="col-sm-4">
-                        <label>Quantidade<span class="required">*</span></label>
-                        <input type="text" class="form-control" name="idQtd">
+                      
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h5 class="mb-0">
+        <i class="btn btn-link collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Contatos
+</i>
+      </h5>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+      <div class="card-body">
+      
+        <div class="col-sm-4">
+          <label>Telefone</label>
+            <input type="text" class="form-control" name="idTel" value="<?php echo $tel?>" disabled>
+        </div>
+        <br>
+        <div class="col-sm-4">
+          <label>Celular</label>
+            <input type="text" class="form-control" name="idCel" value="<?php echo $cel?>" disabled>
+         </div>
+        <br>
+        <div class="col-sm-4">
+          <label>Email</label>
+            <input type="text" class="form-control" name="idEmail" value="<?php echo $email?>" disabled>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="headingThree">
+      <h5 class="mb-0">
+        <i class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Endereço
+</i>
+      </h5>
+    </div>
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+      <div class="card-body">
+      <div class="col-sm-4">
+                        <label>CEP</label>
+                        <input type="text" class="form-control" name="idCep" value="<?php echo $cep?>" disabled>
                       </div>
                       <br>
-                      <input type="submit" class="btn btn-outline-success" value="Cadastrar"/>
+                      <div class="col-sm-4">
+                        <label>Rua</label>
+                        <input type="text" class="form-control" name="idRua" value="<?php echo $rua?>" disabled>
+                      </div>
+                      <br>
+                      <div class="col-sm-4">
+                        <label>Numero</label>
+                        <input type="text" class="form-control" name="idNum" value="<?php echo $num?>" disabled>
+                      </div>
+                      <br>
+                      <div class="col-sm-4">
+                        <label>Bairro</label>
+                        <input type="text" class="form-control" name="idBai" value="<?php echo $bai?>" disabled>
+                      </div>
+                      <br>
+                      <div class="col-sm-4">
+                        <label>Cidade</label>
+                        <input type="text" class="form-control" name="idCid" value="<?php echo $cid?>" disabled>
+                      </div>
+                      <br>
+                      <div class="col-sm-4">
+                        <label>Estado</label>
+                        <input type="text" class="form-control" name="idEst" value="<?php echo $est?>" disabled>
+                      </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<input type="submit" class="btn btn-outline-danger" value="Excluir"/>
+
+
+
+
+
+
                     </form>
                   </tbody>
                 </table>

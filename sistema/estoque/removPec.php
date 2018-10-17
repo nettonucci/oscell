@@ -1,3 +1,23 @@
+<?php
+require_once '../conexao.php'; 
+
+$con = open_conexao(); 
+//selectDb(); 
+   //recuperar valor passado por get
+$id = trim($_REQUEST['id']);
+    //buscar no banco de dados
+$rs = mysqli_query($con, "select * from estoque WHERE id=".$id);
+
+$row = mysqli_fetch_array($rs); 
+$desc = $row['descricao']; 
+$comp = $row['precocompra'];
+$vend = $row['precovenda']; 
+$qtd = $row['quantidade'];
+
+close_conexao($con); 
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,25 +28,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-
-    <title>SB Admin - Tables</title>
+    <title>Sistema - Nucci</title>
 
     <!-- Bootstrap core CSS-->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Page level plugin CSS-->
-    <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <link href="../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin.css" rel="stylesheet">
+    <link href="../css/sb-admin.css" rel="stylesheet">
 
     <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
 
@@ -45,7 +60,7 @@
       <!-- Navbar Search -->
       <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
         <div class="input-group">
-
+          
           </div>
         </div>
       </form>
@@ -96,23 +111,23 @@
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="../index.html">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="clientes.php">
+          <a class="nav-link" href="../clientes/clientes.php">
             <i class="fas fa-fw fa-user-alt"></i>
             <span>Clientes</span></a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link" href="estoque.php">
             <i class="fas fa-fw fa-boxes"></i>
             <span>Estoque</span></a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="os.php">
+        <li class="nav-item">
+          <a class="nav-link" href="../os/os.php">
             <i class="fas fa-fw fa-tags"></i>
             <span>Ordens de Serviço</span></a>
         </li>
@@ -133,71 +148,44 @@
               <a href="index.html">Dashboard</a>
             </li>
             <li class="breadcrumb-item">
-              <a href="os.php">Ordens de Serviço</a>
+              <a href="estoque.php">Estoque</a>
             </li>
-            <li class="breadcrumb-item active">Adicionar OS</li>
+            <li class="breadcrumb-item active">Excluir Peça</li>
           </ol>
 
 
           <!-- DataTables Example -->
-          <form data-toggle="validator" method="post" action="valCadOS.php">
+          <form data-toggle="validator" method="post" action="valRemPec.php">
           <div class="card mb-3">
-            <div class="card-header"
-              <i class="fas fa-tags"></i>
-              Adicionar OS</div>
+            <div class="card-header">
+              <i class="fas fa-user-alt"></i>
+              Adicionar Peça</div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
-                  <nav>
-              <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <a class="nav-item nav-link active" id="nav-det-tab" data-toggle="tab" href="#nav-det" role="tab" aria-controls="nav-det" aria-selected="true">Detalhes da OS</a>
-          </div>
-          </nav>
-          <div class="tab-content" id="nav-tabContent">
-          <div class="tab-pane fade show active" id="nav-det" role="tabpanel" aria-labelledby="nav-home-tab">
-                    <br>
-                    <br>
-                    <div class="col-sm-4">
-                    <label>Status<span class="required">*</span></label>
-                    <br>
-                      <select class="form-control" name="idstatus" id="status" value="">
-                        <option value="Orçamento">Orçamento</option>
-                        <option value="Aberto">Aberto</option>
-                        <option value="Em Andamento">Em Andamento</option>
-                        <option value="Finalizado">Finalizado</option>
-                        <option value="Cancelado">Cancelado</option>
-                      </select>
-                    </div>
-                    <br>
-                    <div class="col-sm-4">
-                      <label>Cliente<span class="required">*</span></label>
-                      <input type="text" class="form-control" name="idcli">
-                    </div>
-                    <br>
-                    <div class="col-sm-4">
-                      <label>Data de entrada<span class="required">*</span></label>
-                      <input type="text" class="form-control" name="iddataent" value="<?php echo date('d/m/Y'); ?>">
-                    </div>
-                    <br>
-                    <div class="col-sm-4">
-                      <label>Descrição Produto<span class="required">*</span></label>
-                       <textarea class="span6" name="iddesc" id="descricaoProduto" cols="69" rows="5"></textarea>
-                    </div>
-                    <br>
-                    <div class="col-sm-4">
-                      <label for="defeito">Defeito</label>
-                        <textarea class="span6" name="iddef" id="defeito" cols="69" rows="5"></textarea>
-                    </div>
-                    <br>
-                    <div class="col-sm-4">
-                      <label for="defeito">Observações</label>
-                        <textarea class="span6" name="idobs" id="defeito" cols="69" rows="5"></textarea>
+
+                  <input type="hidden" name="id"  value="<?php echo $id?>">
+                  
+                  <div class="col-sm-4">
+                      <label>Descrição</label>
+                      <input type="text" class="form-control" name="idDesc" value="<?php echo $desc?>" disabled>
                     </div>
 
-                    <br>
-                      <input type="submit" class="btn btn-outline-success" value="Cadastrar"/>
-                  </div>
+                    <div class="col-sm-4">
+                        <label>Preço de compra</label>
+                        <input type="text" class="form-control" name="idComp" value="<?php echo $comp?>" disabled>
+                      </div>
+                      <div class="col-sm-4">
+                        <label>Preço de venda</label>
+                        <input type="text" class="form-control" name="idVend" value="<?php echo $vend?>" disabled>
+                      </div>
+                      <div class="col-sm-4">
+                        <label>Quantidade</label>
+                        <input type="text" class="form-control" name="idQtd" value="<?php echo $qtd?>" disabled>
+                      </div>
+                      <br>
+                      <input type="submit" class="btn btn-outline-danger" value="Excluir"/>
                     </form>
                   </tbody>
                 </table>
@@ -206,7 +194,7 @@
             <div class="card-footer small text-muted"> </div>
           </div>
 
-
+         
 
         </div>
         <!-- /.container-fluid -->

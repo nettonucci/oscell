@@ -1,14 +1,24 @@
 <?php
-  //verifica sessão, se está logado 
-//session_start();
-//if (!isset($_SESSION['user'])) //AND (!isset($_SESSION[nome])) ) 
-//Header("Location: index.html");
+require_once '../conexao.php'; 
 
-require_once 'conexao.php';
-$con = open_conexao();
-$rs = mysqli_query($con,"select * from estoque;"); //rs=record set (conjunto de registros)
-close_conexao($con);
+$con = open_conexao(); 
+//selectDb(); 
+   //recuperar valor passado por get
+$id = trim($_REQUEST['id']);
+    //buscar no banco de dados
+$rs = mysqli_query($con, "select * from estoque WHERE id=".$id);
+
+$row = mysqli_fetch_array($rs); 
+$desc = $row['descricao']; 
+$comp = $row['precocompra'];
+$vend = $row['precovenda']; 
+$qtd = $row['quantidade'];
+
+close_conexao($con); 
+
 ?>
+
+<!DOCTYPE html>
 <html lang="en">
 
   <head>
@@ -19,19 +29,19 @@ close_conexao($con);
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin - Tables</title>
+    <title>Sistema - Nucci</title>
 
     <!-- Bootstrap core CSS-->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Page level plugin CSS-->
-    <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <link href="../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin.css" rel="stylesheet">
+    <link href="../css/sb-admin.css" rel="stylesheet">
 
     <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
 
@@ -101,23 +111,23 @@ close_conexao($con);
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="../index.html">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="clientes.php">
+          <a class="nav-link" href="../clientes/clientes.php">
             <i class="fas fa-fw fa-user-alt"></i>
             <span>Clientes</span></a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="estoque.php">
             <i class="fas fa-fw fa-boxes"></i>
             <span>Estoque</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="os.php">
+          <a class="nav-link" href="../os/os.php">
             <i class="fas fa-fw fa-tags"></i>
             <span>Ordens de Serviço</span></a>
         </li>
@@ -137,60 +147,46 @@ close_conexao($con);
             <li class="breadcrumb-item">
               <a href="index.html">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Estoque</li>
+            <li class="breadcrumb-item">
+              <a href="estoque.php">Estoque</a>
+            </li>
+            <li class="breadcrumb-item active">Atualizar Peça</li>
           </ol>
 
-          <a class="btn btn-success" href="cadpeca.php"> <i class="ion-plus-round"></i> Adicionar Peça</a>
-          <br>
-          <br>
+
           <!-- DataTables Example -->
-          <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+          <form data-toggle="validator" method="post" action="valAlterPec.php">
           <div class="card mb-3">
             <div class="card-header">
-              <i class="fas fa-boxes"></i>
-              Peças</div>
+              <i class="fas fa-user-alt"></i>
+              Adicionar Peça</div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
-                  <div class="row col-md-7">
-          <table  class="table table-striped">
-            <tr>
-             <th widht="300" align="right">Descrição</th>
-             <th widht="80" align="right">Preço de Compra</th>
-             <th widht="80" align="right">Preço de Venda</th>
-             <th widht="80" align="center">Quantidade</th>
 
-             <th></th>
-             <th></th>
-           </tr>
-           <?php while ($row = mysqli_fetch_array($rs)) { ?> 
-           <tr>
-             
+                    <input type="hidden" name="id"  value="<?php echo $id?>">
 
-            <td><?php echo $row['descricao'] ?></td>
-            <td><?php echo $row['precocompra'] ?></td>
-            <td><?php echo $row['precovenda'] ?></td>
-            <td><?php echo $row['quantidade'] ?></td>
+                  <div class="col-sm-4">
+                      <label>Descrição</label>
+                      <input type="text" class="form-control" name="idDesc" value="<?php echo $desc?>">
+                    </div>
 
-            <td>
-              <button type="button" class="btn btn-warning"
-              onclick="javascript:location.href='../alterar/altCli.php?id=' 
-              + <?php echo $row['id'] ?> ">
-              <span class="ion-edit" aria-hidden="true"></span>
-            </button>                 
-          </td>  
-          <td>
-            <button type="button" class="btn btn-danger"
-            onclick="javascript:location.href='../remover/remCli.php?id=' 
-            + <?php echo $row['id'] ?> ">
-            <span class="ion-trash-a" aria-hidden="true"></span>
-          </button>                 
-        </td>                    
-      </tr>
-      <?php 
-    } ?>
-           
+                    <div class="col-sm-4">
+                        <label>Preço de compra</label>
+                        <input type="text" class="form-control" name="idComp" value="<?php echo $comp?>">
+                      </div>
+                      <div class="col-sm-4">
+                        <label>Preço de venda</label>
+                        <input type="text" class="form-control" name="idVend" value="<?php echo $vend?>">
+                      </div>
+                      <div class="col-sm-4">
+                        <label>Quantidade</label>
+                        <input type="text" class="form-control" name="idQtd" value="<?php echo $qtd?>">
+                      </div>
+                      <br>
+                      <input type="submit" class="btn btn-outline-success" value="Atualizar"/>
+                    </form>
                   </tbody>
                 </table>
               </div>

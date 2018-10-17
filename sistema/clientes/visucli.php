@@ -1,40 +1,30 @@
 <?php
-require_once 'conexao.php'; 
+require_once '../conexao.php'; 
 
 $con = open_conexao(); 
 //selectDb(); 
    //recuperar valor passado por get
 $id = trim($_REQUEST['id']);
     //buscar no banco de dados
-$rs = mysqli_query($con, "SELECT * FROM os WHERE id=".$id);
+$rs = mysqli_query($con, "select * from clientes where id=".$id);
 
 $row = mysqli_fetch_array($rs);
 $id = $row['id']; 
-$cli = $row['idcliente']; 
-$sta = $row['status'];
-$dte = $row['dataentrada']; 
-$dts = $row['datasaida'];
-$eqp = $row['equipamento'];
-$def = $row['defeito'];
-$obs = $row['obs']; 
-$lau = $row['laudo'];
-$prod = $row['idproduto'];
-$qtdp = $row['qtdproduto'];
+$nome = $row['nome']; 
+$cpf = $row['cpf'];
+$tel = $row['telefone']; 
+$cel = $row['celular'];
+$email = $row['email'];
+$cep = $row['cep'];
+$rua = $row['rua']; 
+$num = $row['numero'];
+$bai = $row['bairro'];
+$cid = $row['cidade'];
+$est = $row['estado'];
 close_conexao($con); 
 
 ?>
 
-<?php
-  //verifica sessão, se está logado 
-//session_start();
-//if (!isset($_SESSION['user'])) //AND (!isset($_SESSION[nome])) ) 
-//Header("Location: index.html");
-
-require_once 'conexao.php';
-$con = open_conexao();
-$rs = mysqli_query($con,"SELECT * FROM maoobra INNER JOIN os ON (maoobra.idos = os.id) WHERE os.id =".$id); //rs=record set (conjunto de registros)
-close_conexao($con);
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,24 +36,24 @@ close_conexao($con);
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
-
-    <title>Sistema Nucci</title>
+    <title>Sistema - Nucci</title>
 
     <!-- Bootstrap core CSS-->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Page level plugin CSS-->
-    <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <link href="../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin.css" rel="stylesheet">
+    <link href="../css/sb-admin.css" rel="stylesheet">
 
     <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
 
@@ -82,7 +72,7 @@ close_conexao($con);
       <!-- Navbar Search -->
       <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
         <div class="input-group">
-
+          
           </div>
         </div>
       </form>
@@ -133,23 +123,23 @@ close_conexao($con);
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="../index.html">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link" href="clientes.php">
             <i class="fas fa-fw fa-user-alt"></i>
             <span>Clientes</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="estoque.php">
+          <a class="nav-link" href="../estoque/estoque.php">
             <i class="fas fa-fw fa-boxes"></i>
             <span>Estoque</span></a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="os.php">
+        <li class="nav-item">
+          <a class="nav-link" href="../os/os.php">
             <i class="fas fa-fw fa-tags"></i>
             <span>Ordens de Serviço</span></a>
         </li>
@@ -170,134 +160,154 @@ close_conexao($con);
               <a href="index.html">Dashboard</a>
             </li>
             <li class="breadcrumb-item">
-              <a href="os.php">Ordens de Serviço</a>
+              <a href="clientes.php">Clientes</a>
             </li>
-            <li class="breadcrumb-item active">Visualizar OS</li>
+            <li class="breadcrumb-item active">Visualizar Cliente</li>
           </ol>
 
 
           <!-- DataTables Example -->
-          <form data-toggle="validator" method="post" action="valCadCli.php">
           <div class="card mb-3">
-            <div class="card-header"
-              <i class="fas fa-tags"></i>
-              Visualizar OS</div>
+            <div class="card-header">
+              <i class="fas fa-user-alt"></i>
+              Visualizar Cliente</div>
               <td>
-              <button type="button" class="btn btn-warning" title="Editar OS"
-              onclick="javascript:location.href='editos.php?id=' 
+              <button type="button" class="btn btn-warning" title="Editar cliente"
+              onclick="javascript:location.href='editCli.php?id=' 
               + <?php echo $row['id'] ?> ">
               <span class="ion-edit" aria-hidden="true"></span>
             </button>                 
-          </td>  
+          </td> 
+          <td>
+            <button type="button" class="btn btn-danger" title="Remover cliente"
+            onclick="javascript:location.href='removCli.php?id=' 
+            + <?php echo $row['id'] ?> ">
+            <span class="ion-trash-a" aria-hidden="true"></span>
+          </button>                 
+        </td> 
             <div class="card-body">
               <div class="table-responsive">
-                
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
-                  <nav>
-              <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <a class="nav-item nav-link active" id="nav-det-tab" data-toggle="tab" href="#nav-det" role="tab" aria-controls="nav-det" aria-selected="true">Detalhes da OS</a>
-              <a class="nav-item nav-link" id="nav-laudo-tab" data-toggle="tab" href="#nav-laudo" role="tab" aria-controls="nav-laudo" aria-selected="true">Laudo</a>
-              <a class="nav-item nav-link" id="nav-pec-tab" data-toggle="tab" href="#nav-pec" role="tab" aria-controls="nav-pec" aria-selected="true">Peças</a>
-              <a class="nav-item nav-link" id="nav-serv-tab" data-toggle="tab" href="#nav-serv" role="tab" aria-controls="nav-serv" aria-selected="true">Serviços</a>
-          </div>
-          </nav>
-          <div class="tab-content" id="nav-tabContent">
-          <div class="tab-pane fade show active" id="nav-det" role="tabpanel" aria-labelledby="nav-home-tab">
-                    <br>
-                    <br>
-                    <div class="col-sm-10">
-                    <label><b>Ordem de serviço</b></label>
-                    <p>
-                    <?php echo $id?>
-                    </div>
-                    <hr>
-                    <br>
-                    <div class="col-sm-10">
-                    <label><b>Cliente</b></label>
-                    <p>
-                    <?php echo $cli?>
-                    </div>
-                    <hr>
-                    <br>
-                    <div class="col-sm-4">
-                    <label><b>Status</b></label>
-                    <p>
-                    <?php echo $sta?>
-                    </div>
-                    <hr>
-                    <br>
-                    <div class="col-sm-4">
-                    <label><b>Data de entrada</b></label>
-                    <p>
-                    <?php echo $dte?>
-                    </div>
-                    <hr>
-                    <br>
-                    <div class="col-sm-4">
-                    <label><b>Descrição do produto</b></label>
-                    <p>
-                    <?php echo $eqp?>
-                    </div>
-                    <hr>
-                    <br>
-                    <div class="col-sm-4">
-                    <label><b>Defeito</b></label>
-                    <p>
-                    <?php echo $def?>
-                    </div>
-                    <hr>
-                    <br>
-                    <div class="col-sm-4">
-                    <label><b>Observações</b></label>
-                    <p>
-                    <?php echo $obs?>
-                    </div>
-                    <br>
-                  </div>
-
-                  <div class="tab-pane fade show" id="nav-laudo" role="tabpanel" aria-labelledby="nav-home-tab">
-                  <br>
-                    <div class="col-sm-4">
-                    <label><b>Laudo Técnico</b></label>
-                    <p>
-                    <?php echo $lau?>
-                    </div>
-                    </div>
-
-                  <div class="tab-pane fade show" id="nav-pec" role="tabpanel" aria-labelledby="nav-home-tab">
-                  <br>
-                    
-                    </div>
-
-                  <div class="tab-pane fade show" id="nav-serv" role="tabpanel" aria-labelledby="nav-home-tab">
-                  <br>
-                  <table class="table">
-                    <tr>
-                      <th widht="80" align="right">Serviço</th>
-                      <th widht="80" align="right">Valor</th>
-                    </tr>
-                  <?php while ($row = mysqli_fetch_array($rs)) { ?>
-                    <tr>
-                      <td><?php echo $row['servico'] ?></td>
-                      <td><?php echo $row['valor'] ?></td>
-                    </tr>
-                  </table>
-                  <?php } ?>
-                    </div>
                   
+                  
+                  <div id="accordion">
+                    <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Dados Pessoais
+        </button>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
+      <div class="col-sm-4">
+                      <label>Nome</label> 
+                      <input type="text" class="form-control" name="idNome" value="<?php echo $nome?>" disabled>
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
+                        <label>CPF/CNPJ</label>
+                        <input type="text" class="form-control" name="idCpf" value="<?php echo $cpf?>" disabled>
+                      </div>
+                      
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Contatos
+        </button>
+      </h5>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+      <div class="card-body">
+      
+        <div class="col-sm-4">
+          <label>Telefone</label>
+            <input type="text" class="form-control" name="idTel" value="<?php echo $tel?>" disabled>
+        </div>
+        <br>
+        <div class="col-sm-4">
+          <label>Celular</label>
+            <input type="text" class="form-control" name="idCel" value="<?php echo $cel?>" disabled>
+         </div>
+        <br>
+        <div class="col-sm-4">
+          <label>Email</label>
+            <input type="text" class="form-control" name="idEmail" value="<?php echo $email?>" disabled>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="headingThree">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Endereço
+        </button>
+      </h5>
+    </div>
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+      <div class="card-body">
+      <div class="col-sm-4">
+                        <label>CEP</label>
+                        <input type="text" class="form-control" name="idCep" value="<?php echo $cep?>" disabled>
+                      </div>
+                      <br>
+                      <div class="col-sm-4">
+                        <label>Rua</label>
+                        <input type="text" class="form-control" name="idRua" value="<?php echo $rua?>" disabled>
+                      </div>
+                      <br>
+                      <div class="col-sm-4">
+                        <label>Numero</label>
+                        <input type="text" class="form-control" name="idNum" value="<?php echo $num?>" disabled>
+                      </div>
+                      <br>
+                      <div class="col-sm-4">
+                        <label>Bairro</label>
+                        <input type="text" class="form-control" name="idBai" value="<?php echo $bai?>" disabled>
+                      </div>
+                      <br>
+                      <div class="col-sm-4">
+                        <label>Cidade</label>
+                        <input type="text" class="form-control" name="idCid" value="<?php echo $cid?>" disabled>
+                      </div>
+                      <br>
+                      <div class="col-sm-4">
+                        <label>Estado</label>
+                        <input type="text" class="form-control" name="idEst" value="<?php echo $est?>" disabled>
+                      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
                     </form>
                   </tbody>
-                  </table>
+                </table>
               </div>
             </div>
             <div class="card-footer small text-muted"> </div>
           </div>
 
-
+         
 
         </div>
         <!-- /.container-fluid -->
-        
 
         <!-- Sticky Footer -->
         <footer class="sticky-footer">
