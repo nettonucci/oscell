@@ -13,8 +13,10 @@ $idos = $row['idos'];
 $cli = $row['idcliente']; 
 $sta = $row['status'];
 $dte = $row['dataentrada']; 
+$tip = $row['tipoeqp'];
+$mod = $row['modelo'];
+$ser = $row['serial'];
 $dts = $row['datasaida'];
-$eqp = $row['equipamento'];
 $def = $row['defeito'];
 $obs = $row['obs']; 
 $lau = $row['laudo'];
@@ -186,8 +188,8 @@ close_conexao($con);
               Visualizar OS</div>
               <td>
               <button type="button" class="btn btn-warning" title="Editar OS"
-              onclick="javascript:location.href='editos.php?id=' 
-              + <?php echo $row['id'] ?> ">
+              onclick="javascript:location.href='editos.php?idos=' 
+              + <?php echo $row['idos'] ?> ">
               <span class="ion-edit" aria-hidden="true"></span>
             </button>                 
           </td>  
@@ -237,9 +239,23 @@ close_conexao($con);
                     <hr>
                     <br>
                     <div class="col-sm-4">
-                    <label><b>Descrição do produto</b></label>
+                    <label><b>Equipamento</b></label>
                     <p>
-                    <?php echo $eqp?>
+                    <?php echo $tip?>
+                    </div>
+                    <hr>
+                    <br>
+                    <div class="col-sm-4">
+                    <label><b>modelo</b></label>
+                    <p>
+                    <?php echo $mod?>
+                    </div>
+                    <hr>
+                    <br>
+                    <div class="col-sm-4">
+                    <label><b>Serial/IMEI</b></label>
+                    <p>
+                    <?php echo $ser?>
                     </div>
                     <hr>
                     <br>

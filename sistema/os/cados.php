@@ -166,7 +166,7 @@
                     <br>
                     <br>
                     <div class="col-sm-4">
-                    <label>Clientes<span class="required">*</span></label>
+                    <label>Cliente<span class="required">*</span></label>
                     <br>
                       <select class="form-control" name="idcli" id="cliente">
                         <option>Selecione...</option>
@@ -192,6 +192,21 @@
                     <div class="col-sm-4">
                       <label>Data de entrada<span class="required">*</span></label>
                       <input type="text" class="form-control" name="iddataent" value="<?php echo date('d/m/Y'); ?>">
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
+                      <label>Equipamento<span class="required">*</span></label>
+                      <input type="text" class="form-control" name="idequip">
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
+                      <label>Modelo<span class="required">*</span></label>
+                      <input type="text" class="form-control" name="idmodelo">
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
+                      <label>Serial/IMEI<span class="required">*</span></label>
+                      <input type="text" class="form-control" name="idserial">
                     </div>
                     <br>
                     <div class="col-sm-4">

@@ -9,11 +9,14 @@ $id = trim($_REQUEST['idos']);
 $rs = mysqli_query($con, "SELECT * FROM os INNER JOIN clientes ON (os.idcliente = clientes.id) WHERE os.idos=".$id);
 
 $row = mysqli_fetch_array($rs); 
+$idos = $row['idos']; 
 $cli = $row['idcliente']; 
 $sta = $row['status'];
 $dte = $row['dataentrada']; 
+$tip = $row['tipoeqp'];
+$mod = $row['modelo'];
+$ser = $row['serial'];
 $dts = $row['datasaida'];
-$eqp = $row['equipamento'];
 $def = $row['defeito'];
 $obs = $row['obs']; 
 $lau = $row['laudo'];
@@ -200,6 +203,7 @@ close_conexao($con);
               <a class="nav-item nav-link" id="nav-total-tab" data-toggle="tab" href="#nav-total" role="tab" aria-controls="nav-total" aria-selected="true">Total</a>
           </div>
           </nav>
+          <input type="hidden" name="idos"  value="<?php echo $idos?>">
           <div class="tab-content" id="nav-tabContent">
           <div class="tab-pane fade show active" id="nav-det" role="tabpanel" aria-labelledby="nav-home-tab">
                     <br>
@@ -209,7 +213,7 @@ close_conexao($con);
                     <br>
                     <input type="text" class="form-control" name="idNome" value="<?php echo $sta?>" disabled>
                       <select class="form-control" name="status" id="status"><?=$sta?>
-                        <option>--</option>
+                        <option>Selecione ou não mexa</option>
                         <option value="Orçamento">Orçamento</option>
                         <option value="Aberto">Aberto</option>
                         <option value="Em Andamento">Em Andamento</option>
@@ -229,9 +233,19 @@ close_conexao($con);
                     </div>
                     <br>
                     <div class="col-sm-4">
-                      <label>Descrição Produto</label>
-                       <textarea class="span6" name="descricaoProduto" id="descricaoProduto" cols="69" rows="5" disabled><?=$eqp?></textarea>
-                    </div> 
+                      <label>Equipamento</label>
+                      <input type="text" class="form-control" name="idEqp" value="<?php echo $tip?>" disabled>
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
+                      <label>Modelo</label>
+                      <input type="text" class="form-control" name="idModel" value="<?php echo $mod?>" disabled>
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
+                      <label>Serial/IMEI</label>
+                      <input type="text" class="form-control" name="idNome" value="<?php echo $ser?>" disabled>
+                    </div>
                     <br>
                     <div class="col-sm-4">
                       <label for="defeito">Defeito</label>
@@ -261,17 +275,17 @@ close_conexao($con);
                         <option>Selecione...</option>
  
                           <?php while($prod = mysqli_fetch_array($query)) { ?>
-                              <option value="<?php echo $prod['id'] ?>"><?php echo $prod['descricao'] ?> || Quantidade: <?php echo $prod['quantidade'] ?></option>
+                              <option value="<?php echo $prod['id'] ?>"><?php echo $prod['descricao'] ?> || Quantidade: <?php echo $prod['quantidade'] ?> || Valor: <?php echo $prod['precovenda'] ?></option>
                                 <?php } ?>
                                    </select>
                     </div>
                     <br>
                     <div class="col-sm-4">
                       <label>Quantidade</label>
-                      <input type="text" class="form-control" name="idNome" value="<?php echo $qtdp?>">
+                      <input type="text" class="form-control" name="idQtd">
                     </div>
                     <br>
-                    <a class="btn btn-success" href="#"> <i class="ion-plus-round"></i> Adicionar</a>
+                    <a class="btn btn-success" href="ValInsPec.php"> <i class="ion-plus-round"></i> Adicionar</a>
                     <br>
                     <br>
 
@@ -285,8 +299,6 @@ close_conexao($con);
                         <th widht="80" align="right">Peça</th>
                         <th widht="80" align="right">Quantidade</th>
                         <th widht="80" align="right">Valor</th>
-                        <th widht="80" align="center"> </th>
-                        <th></th>
                         <th></th>
                       </tr>
                       <?php while ($row = mysqli_fetch_array($rs2)) { ?> 
@@ -294,7 +306,7 @@ close_conexao($con);
              
                       <td><?php echo $row['descricao'] ?></td>
                       <td><?php echo $row['quantidadeos'] ?></td>
-                      <td><?php echo $row['precovenda'] ?></td>
+                      <td>R$<?php echo $row['precovenda'] ?>,00</td>
 
                        <td>
                           <button type="button" class="btn btn-danger" title="Deletar OS"
@@ -304,6 +316,7 @@ close_conexao($con);
                           </button>                 
                       </td>                    
                       </tr>
+
                       <?php 
                         } ?>
                       
@@ -375,7 +388,13 @@ close_conexao($con);
                     </div>
 
                     <div class="tab-pane fade show" id="nav-total" role="tabpanel" aria-labelledby="nav-home-tab">
-
+                        <br>
+                        <?php
+                        
+                        
+                        
+                        ?>
+                        <h1>Total: </h1>
                     </div>
                   <br>
                     </form>

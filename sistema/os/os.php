@@ -177,7 +177,7 @@ close_conexao($con);
             <td><?php echo $row['nome'] ?></td>
             <td><?php echo $row['defeito'] ?></td>
             <td><?php echo $row['status'] ?></td>
-            <td><?php echo $row['equipamento'] ?></td>
+            <td><?php echo $row['tipoeqp'] ?></td>
             <td><?php echo $row['dataentrada'] ?></td>
 
             <td>
