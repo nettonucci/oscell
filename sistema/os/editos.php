@@ -6,12 +6,12 @@ $con = open_conexao();
    //recuperar valor passado por get
 $id = trim($_REQUEST['idos']);
     //buscar no banco de dados
-$rs = mysqli_query($con, "SELECT * FROM os INNER JOIN clientes ON (os.idcliente = clientes.id) WHERE os.idos=".$id);
-
+$rs = mysqli_query($con, "SELECT * FROM os INNER JOIN clientes ON (os.idcliente = clientes.id) INNER JOIN status ON (os.status = status.id) WHERE os.idos=".$id);
+$query2 = mysqli_query($con,"select * from status;");
 $row = mysqli_fetch_array($rs); 
 $idos = $row['idos']; 
 $cli = $row['idcliente']; 
-$sta = $row['status'];
+$sta = $row['descricaosta'];
 $dte = $row['dataentrada']; 
 $tip = $row['tipoeqp'];
 $mod = $row['modelo'];
@@ -23,7 +23,8 @@ $lau = $row['laudo'];
 $prod = $row['idproduto'];
 $qtdp = $row['qtdproduto'];
 $nome = $row['nome'];
-
+$somapeca=null;
+$somaserv=null;
 close_conexao($con); 
 
 ?>
@@ -73,6 +74,13 @@ close_conexao($con);
     <link href="../css/sb-admin.css" rel="stylesheet">
 
     <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
   </head>
 
@@ -184,7 +192,7 @@ close_conexao($con);
 
 
           <!-- DataTables Example -->
-          <form data-toggle="validator" method="post" action="valCadCli.php">
+          <form data-toggle="validator" method="post" action="ValInsPec.php">
           <div class="card mb-3">
             <div class="card-header"
               <i class="fas fa-tags"></i>
@@ -209,16 +217,19 @@ close_conexao($con);
                     <br>
                     <br>
                     <div class="col-sm-4">
+                      <label>Ordem de serviço</label>
+                      <input type="text" class="form-control" name="idEqp" value="<?php echo $idos?>" disabled>
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
                     <label>Status</label>
                     <br>
                     <input type="text" class="form-control" name="idNome" value="<?php echo $sta?>" disabled>
                       <select class="form-control" name="status" id="status"><?=$sta?>
-                        <option>Selecione ou não mexa</option>
-                        <option value="Orçamento">Orçamento</option>
-                        <option value="Aberto">Aberto</option>
-                        <option value="Em Andamento">Em Andamento</option>
-                        <option value="Finalizado">Finalizado</option>
-                        <option value="Cancelado">Cancelado</option>
+                      <option>Selecione...</option>
+                      <?php while($prod = mysqli_fetch_array($query2)) { ?>
+                          <option value="<?php echo $prod['id'] ?>"><?php echo $prod['descricaosta'] ?></option>
+                            <?php } ?>
                       </select>
                     </div>
                     <br>
@@ -266,29 +277,40 @@ close_conexao($con);
                     </div>
                     </div>
 
+
                   <div class="tab-pane fade show" id="nav-pec" role="tabpanel" aria-labelledby="nav-home-tab">
                    <br>
                    <div class="col-sm-4">
-                    <label>Peça<span class="required">*</span></label>
-                    <br>
-                      <select class="form-control" name="idpec" id="peca">
-                        <option>Selecione...</option>
- 
-                          <?php while($prod = mysqli_fetch_array($query)) { ?>
-                              <option value="<?php echo $prod['id'] ?>"><?php echo $prod['descricao'] ?> || Quantidade: <?php echo $prod['quantidade'] ?> || Valor: <?php echo $prod['precovenda'] ?></option>
-                                <?php } ?>
-                                   </select>
-                    </div>
-                    <br>
-                    <div class="col-sm-4">
-                      <label>Quantidade</label>
-                      <input type="text" class="form-control" name="idQtd">
-                    </div>
-                    <br>
-                    <a class="btn btn-success" href="ValInsPec.php"> <i class="ion-plus-round"></i> Adicionar</a>
-                    <br>
-                    <br>
+                    <!-- Button to Open the Modal -->
+                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                    	Inserir Peça
+                     </button>
 
+                       <!-- The Modal -->
+                     <div class="modal fade" id="myModal">
+                     <div class="modal-dialog modal-lg">
+                     <div class="modal-content">
+      
+                       <!-- Modal Header -->
+                      <div class="modal-header">
+                      <h4 class="modal-title">Inserir Peça</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      </div>
+        
+                     <!-- Modal body -->
+                     <?php
+                    include "inserirpeca.php";
+                     ?>
+        
+        
+        
+                        </div>
+                          </div>
+                             </div>
+  
+                              </div>
+                    
+                  
 
                   <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -307,6 +329,9 @@ close_conexao($con);
                       <td><?php echo $row['descricao'] ?></td>
                       <td><?php echo $row['quantidadeos'] ?></td>
                       <td>R$<?php echo $row['precovenda'] ?>,00</td>
+                      <?php
+                        $somapeca = $somapeca + $row['precovenda'] * $row['quantidadeos'];
+                        ?>
 
                        <td>
                           <button type="button" class="btn btn-danger" title="Deletar OS"
@@ -316,37 +341,62 @@ close_conexao($con);
                           </button>                 
                       </td>                    
                       </tr>
+                        
+                        
 
                       <?php 
+                      
                         } ?>
+                        
                       
                       </div>
                       </table>
+
+                        <hr>
+                        <h4>
+                        <?php
+                        Echo 'Total de peças: R$';
+                        Echo $somapeca;
+                        Echo ',00';
+                        ?>
+                        </h4>
+                        <br>
+
                     </div>
-
-
-
-
-
-
-
                   </div>
+
 
                   <div class="tab-pane fade show" id="nav-serv" role="tabpanel" aria-labelledby="nav-home-tab">
                   <br>
-                  <div class="col-sm-4">
-                      <label>Serviço realizado</label>
-                      <input type="text" class="form-control" name="servico">
-                    </div>
-                    <br>
-                    <div class="col-sm-4">
-                      <label>Valor</label>
-                      <input type="text" class="form-control" name="valor">
-                    </div>
-                    <br>
-                    <a class="btn btn-success" href="#"> <i class="ion-plus-round"></i> Adicionar</a>
-                    <br>
-                    <br>
+                   <div class="col-sm-4">
+                    <!-- Button to Open the Modal -->
+                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">
+                    	Inserir Serviço
+                     </button>
+
+                       <!-- The Modal -->
+                     <div class="modal fade" id="myModal2">
+                     <div class="modal-dialog modal-lg">
+                     <div class="modal-content">
+      
+                       <!-- Modal Header -->
+                      <div class="modal-header">
+                      <h4 class="modal-title">Inserir Serviço</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      </div>
+        
+                     <!-- Modal body -->
+                     <?php
+                    include "inserirserv.php";
+                     ?>
+        
+        
+        
+                        </div>
+                          </div>
+                             </div>
+  
+                              </div>
 
 
 
@@ -369,8 +419,12 @@ close_conexao($con);
                       <tr>
              
                       <td><?php echo $row['servico'] ?></td>
-                      <td><?php echo $row['valor'] ?></td>
-
+                      <td>R$<?php echo $row['valor'] ?>,00</td>
+                      
+                      <?php
+                        $somaserv = $somaserv + $row['valor'];
+                        ?>
+                      </div>                          
                        <td>
                           <button type="button" class="btn btn-danger" title="Deletar OS"
                           onclick="javascript:location.href='../remover/remCli.php?id=' 
@@ -382,19 +436,48 @@ close_conexao($con);
                       <?php 
                         } ?>
                       
-                      </div>
                       </table>
+                      <hr>
+                      <h4>
+                        <?php
+                        Echo 'Total de serviços: R$';
+                        Echo $somaserv;
+                        Echo ',00';
+                        ?>
+                        </h4>
                     </div>
                     </div>
 
                     <div class="tab-pane fade show" id="nav-total" role="tabpanel" aria-labelledby="nav-home-tab">
                         <br>
+                        <h2>Total</h2>
+                        <hr>
+                        <h4>
                         <?php
-                        
-                        
-                        
+                        Echo 'Total de peças: R$';
+                        Echo $somapeca;
+                        Echo ',00';
                         ?>
-                        <h1>Total: </h1>
+                        <br>
+                        
+                        <hr>
+                        <?php
+                        Echo 'Total de serviços: R$';
+                        Echo $somaserv;
+                        Echo ',00';
+                        ?>
+                        </h4>
+                        <hr>
+                        <br>
+                        
+                        <h3>
+                        <?php
+                        $total = $somapeca + $somaserv;
+                        Echo 'Total da Ordem de serviço: R$';
+                        Echo $total;
+                        Echo ',00';
+                        ?>
+                        </h3>
                     </div>
                   <br>
                     </form>

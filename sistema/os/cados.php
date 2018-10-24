@@ -2,6 +2,7 @@
   require_once '../conexao.php';
   $con = open_conexao();
   $query = mysqli_query($con,"select * from clientes;");
+  $query2 = mysqli_query($con,"select * from status;");
   close_conexao($con);
 
 ?>
@@ -180,12 +181,10 @@
                     <div class="col-sm-4">
                     <label>Status<span class="required">*</span></label>
                     <br>
-                      <select class="form-control" name="idstatus" id="status" value="">
-                        <option value="Orçamento">Orçamento</option>
-                        <option value="Aberto">Aberto</option>
-                        <option value="Em Andamento">Em Andamento</option>
-                        <option value="Finalizado">Finalizado</option>
-                        <option value="Cancelado">Cancelado</option>
+                      <select class="form-control" name="idstatus" id="status" value=""> 
+                        <?php while($prod = mysqli_fetch_array($query2)) { ?>
+                          <option value="<?php echo $prod['id'] ?>"><?php echo $prod['descricaosta'] ?></option>
+                            <?php } ?>
                       </select>
                     </div>
                     <br>

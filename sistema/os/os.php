@@ -6,7 +6,7 @@
 
 require_once '../conexao.php';
 $con = open_conexao();
-$rs = mysqli_query($con,"SELECT * FROM os INNER JOIN clientes ON (os.idcliente = clientes.id);"); //rs=record set (conjunto de registros)
+$rs = mysqli_query($con,"SELECT * FROM os INNER JOIN clientes ON (os.idcliente = clientes.id) INNER JOIN status ON (os.status = status.id);"); //rs=record set (conjunto de registros)
 close_conexao($con);
 ?>
 <html lang="en">
@@ -176,7 +176,7 @@ close_conexao($con);
             <td><?php echo $row['idos'] ?></td>
             <td><?php echo $row['nome'] ?></td>
             <td><?php echo $row['defeito'] ?></td>
-            <td><?php echo $row['status'] ?></td>
+            <td><?php echo $row['descricaosta'] ?></td>
             <td><?php echo $row['tipoeqp'] ?></td>
             <td><?php echo $row['dataentrada'] ?></td>
 

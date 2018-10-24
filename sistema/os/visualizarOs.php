@@ -6,12 +6,12 @@ $con = open_conexao();
    //recuperar valor passado por get
 $id = trim($_REQUEST['idos']);
     //buscar no banco de dados
-$rs = mysqli_query($con, "SELECT * FROM os INNER JOIN clientes ON (os.idcliente = clientes.id) WHERE os.idos=".$id);
+$rs = mysqli_query($con, "SELECT * FROM os INNER JOIN clientes ON (os.idcliente = clientes.id) INNER JOIN status ON (os.status = status.id) WHERE os.idos=".$id);
 
 $row = mysqli_fetch_array($rs);
 $idos = $row['idos']; 
 $cli = $row['idcliente']; 
-$sta = $row['status'];
+$sta = $row['descricaosta'];
 $dte = $row['dataentrada']; 
 $tip = $row['tipoeqp'];
 $mod = $row['modelo'];
@@ -23,6 +23,8 @@ $lau = $row['laudo'];
 $prod = $row['idproduto'];
 $qtdp = $row['qtdproduto'];
 $nome = $row['nome'];
+$somapeca=null;
+$somaserv=null;
 close_conexao($con); 
 
 ?>
@@ -307,8 +309,10 @@ close_conexao($con);
              
                       <td><?php echo $row['descricao'] ?></td>
                       <td><?php echo $row['quantidadeos'] ?></td>
-                      <td><?php echo $row['precovenda'] ?></td>
-
+                      <td>R$<?php echo $row['precovenda'] ?>,00</td>
+                      <?php
+                        $somapeca = $somapeca + $row['precovenda'];
+                        ?>
                        <td>
                           <button type="button" class="btn btn-danger" title="Deletar OS"
                           onclick="javascript:location.href='../remover/remCli.php?id=' 
@@ -322,6 +326,15 @@ close_conexao($con);
                       
                       </div>
                       </table>
+                      <hr>
+                        <h4>
+                        <?php
+                        Echo 'Total de peças: R$';
+                        Echo $somapeca;
+                        Echo ',00';
+                        ?>
+                        </h4>
+                        <br>
                     </div>
 
                     </div>
@@ -348,8 +361,11 @@ close_conexao($con);
                       <tr>
              
                       <td><?php echo $row['servico'] ?></td>
-                      <td><?php echo $row['valor'] ?></td>
-
+                      <td>R$<?php echo $row['valor'] ?>,00</td>
+                      <?php
+                        $somaserv = $somaserv + $row['valor'];
+                        ?>
+                      </div> 
                        <td>
                           <button type="button" class="btn btn-danger" title="Deletar OS"
                           onclick="javascript:location.href='../remover/remCli.php?id=' 
@@ -363,11 +379,47 @@ close_conexao($con);
                       
                       </div>
                       </table>
+                      <hr>
+                      <h4>
+                        <?php
+                        Echo 'Total de serviços: R$';
+                        Echo $somaserv;
+                        Echo ',00';
+                        ?>
+                        </h4>
                     </div>
                     </div>
 
                     <div class="tab-pane fade show" id="nav-total" role="tabpanel" aria-labelledby="nav-home-tab">
-
+                    <br>
+                        <h2>Total</h2>
+                        <hr>
+                        <h4>
+                        <?php
+                        Echo 'Total de peças: R$';
+                        Echo $somapeca;
+                        Echo ',00';
+                        ?>
+                        <br>
+                        
+                        <hr>
+                        <?php
+                        Echo 'Total de serviços: R$';
+                        Echo $somaserv;
+                        Echo ',00';
+                        ?>
+                        </h4>
+                        <hr>
+                        <br>
+                        
+                        <h3>
+                        <?php
+                        $total = $somapeca + $somaserv;
+                        Echo 'Total da Ordem de serviço: R$';
+                        Echo $total;
+                        Echo ',00';
+                        ?>
+                        </h3>
                     </div>
 
 
