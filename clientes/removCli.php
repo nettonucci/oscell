@@ -1,14 +1,31 @@
 <?php
-  //verifica sessão, se está logado 
-//session_start();
-//if (!isset($_SESSION['user'])) //AND (!isset($_SESSION[nome])) ) 
-//Header("Location: index.html");
+require_once '../conexao.php'; 
 
-require_once '../conexao.php';
-$con = open_conexao();
-$rs = mysqli_query($con,"select * from clientes;"); //rs=record set (conjunto de registros)
-close_conexao($con);
+$con = open_conexao(); 
+//selectDb(); 
+   //recuperar valor passado por get
+$id = trim($_REQUEST['id']);
+    //buscar no banco de dados
+$rs = mysqli_query($con, "select * from clientes where id=".$id);
+
+$row = mysqli_fetch_array($rs);
+$id = $row['id']; 
+$nome = $row['nome']; 
+$cpf = $row['cpf'];
+$tel = $row['telefone']; 
+$cel = $row['celular'];
+$email = $row['email'];
+$cep = $row['cep'];
+$rua = $row['rua']; 
+$num = $row['numero'];
+$bai = $row['bairro'];
+$cid = $row['cidade'];
+$est = $row['estado'];
+close_conexao($con); 
+
 ?>
+
+<!DOCTYPE html>
 <html lang="en">
 
   <head>
@@ -18,8 +35,13 @@ close_conexao($con);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
-    <title>SB Admin - Tables</title>
+    <title>Sistema - Nucci</title>
 
     <!-- Bootstrap core CSS-->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -101,7 +123,7 @@ close_conexao($con);
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="../index.html">
+          <a class="nav-link" href="index.html">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
           </a>
@@ -137,70 +159,133 @@ close_conexao($con);
             <li class="breadcrumb-item">
               <a href="index.html">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Clientes</li>
+            <li class="breadcrumb-item">
+              <a href="clientes.php">Clientes</a>
+            </li>
+            <li class="breadcrumb-item active">Visualizar Cliente</li>
           </ol>
 
-          <a class="btn btn-success" href="cadcli.php"> <i class="ion-plus-round"></i> Adicionar Cliente</a>
-          <br>
-          <br>
+
           <!-- DataTables Example -->
-          <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+          <form data-toggle="validator" method="post" action="valRemCli.php">
           <div class="card mb-3">
             <div class="card-header">
               <i class="fas fa-user-alt"></i>
-              Clientes</div>
+              Visualizar Cliente</div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
-                  <div class="row col-md-7">
-          <table  class="table table-striped">
-            <tr>
-             <th widht="300" align="right">Nome</th>
-             <th widht="80" align="right">Endereco</th>
-             <th widht="80" align="right">Telefone</th>
-             <th widht="80" align="center">CPF</th>
-             <th widht="80" align="center"> </th>
+                  
+                  <input type="hidden" name="id"  value="<?php echo $id?>">
 
-             <th></th>
-             <th></th>
-           </tr>
-           <?php while ($row = mysqli_fetch_array($rs)) { ?> 
-           <tr>
-             
+                  <div id="accordion">
+                    <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <i class="btn btn-link" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Dados Pessoais
+</i>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
+      <div class="col-sm-4">
+                      <label>Nome</label> 
+                      <input type="text" class="form-control" name="idNome" value="<?php echo $nome?>" disabled>
+                    </div>
+                    <br>
+                    <div class="col-sm-4">
+                        <label>CPF/CNPJ</label>
+                        <input type="text" class="form-control" name="idCpf" value="<?php echo $cpf?>" disabled>
+                      </div>
+                      
+      </div>
+    </div>
+  </div>
 
-            <td><?php echo $row['nome'] ?></td>
-            <td><?php echo $row['rua'] ?></td>
-            <td><?php echo $row['telefone'] ?></td>
-            <td><?php echo $row['cpf'] ?></td>
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h5 class="mb-0">
+        <i class="btn btn-link collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Contatos
+</i>
+      </h5>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+      <div class="card-body">
+      
+        <div class="col-sm-4">
+          <label>Telefone</label>
+            <input type="text" class="form-control" name="idTel" value="<?php echo $tel?>" disabled>
+        </div>
+        <br>
+        <div class="col-sm-4">
+          <label>Celular</label>
+            <input type="text" class="form-control" name="idCel" value="<?php echo $cel?>" disabled>
+         </div>
+        <br>
+        <div class="col-sm-4">
+          <label>Email</label>
+            <input type="text" class="form-control" name="idEmail" value="<?php echo $email?>" disabled>
+        </div>
 
-            <td>
-              <button type="button" class="btn btn-warning" title="Editar cliente"
-              onclick="javascript:location.href='editCli.php?id=' 
-              + <?php echo $row['id'] ?> ">
-              <span class="ion-edit" aria-hidden="true"></span>
-            </button>                 
-          </td>  
+      </div>
+    </div>
+  </div>
 
-            <td>
-              <button type="button" class="btn btn-info" title="Visualizar cliente"
-              onclick="javascript:location.href='visucli.php?id=' 
-              + <?php echo $row['id'] ?> ">
-              <span class="ion-eye" aria-hidden="true"></span>
-            </button>                 
-          </td>  
+  <div class="card">
+    <div class="card-header" id="headingThree">
+      <h5 class="mb-0">
+        <i class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Endereço
+</i>
+      </h5>
+    </div>
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+      <div class="card-body">
+      <div class="col-sm-4">
+                        <label>CEP</label>
+                        <input type="text" class="form-control" name="idCep" value="<?php echo $cep?>" disabled>
+                      </div>
+                      <br>
+                      <div class="col-sm-4">
+                        <label>Rua</label>
+                        <input type="text" class="form-control" name="idRua" value="<?php echo $rua?>" disabled>
+                      </div>
+                      <br>
+                      <div class="col-sm-4">
+                        <label>Numero</label>
+                        <input type="text" class="form-control" name="idNum" value="<?php echo $num?>" disabled>
+                      </div>
+                      <br>
+                      <div class="col-sm-4">
+                        <label>Bairro</label>
+                        <input type="text" class="form-control" name="idBai" value="<?php echo $bai?>" disabled>
+                      </div>
+                      <br>
+                      <div class="col-sm-4">
+                        <label>Cidade</label>
+                        <input type="text" class="form-control" name="idCid" value="<?php echo $cid?>" disabled>
+                      </div>
+                      <br>
+                      <div class="col-sm-4">
+                        <label>Estado</label>
+                        <input type="text" class="form-control" name="idEst" value="<?php echo $est?>" disabled>
+                      </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<input type="submit" class="btn btn-outline-danger" value="Excluir"/>
 
-          <td>
-            <button type="button" class="btn btn-danger" title="Remover cliente"
-            onclick="javascript:location.href='removCli.php?id=' 
-            + <?php echo $row['id'] ?> ">
-            <span class="ion-trash-a" aria-hidden="true"></span>
-          </button>                 
-        </td>                    
-      </tr>
-      <?php 
-    } ?>
-           
+
+
+
+
+
+                    </form>
                   </tbody>
                 </table>
               </div>
@@ -213,7 +298,16 @@ close_conexao($con);
         </div>
         <!-- /.container-fluid -->
 
+        <!-- Sticky Footer -->
+        <footer class="sticky-footer">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>Copyright © Studio BlueMind 2018</span>
+            </div>
+          </div>
+        </footer>
 
+      </div>
       <!-- /.content-wrapper -->
 
     </div>
