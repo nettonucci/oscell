@@ -6,7 +6,7 @@
 
 require_once '../conexao.php';
 $con = open_conexao();
-$rs = mysqli_query($con,"select * from clientes;"); //rs=record set (conjunto de registros)
+$rs = mysqli_query($con,"SELECT * FROM os INNER JOIN clientes ON (os.idcliente = clientes.id) INNER JOIN status ON (os.status = status.id);"); //rs=record set (conjunto de registros)
 close_conexao($con);
 ?>
 <html lang="en">
@@ -18,8 +18,9 @@ close_conexao($con);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    
 
-    <title>SB Admin - Tables</title>
+    <title>Sistema Nucci</title>
 
     <!-- Bootstrap core CSS-->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -106,8 +107,8 @@ close_conexao($con);
             <span>Dashboard</span>
           </a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="clientes.php">
+        <li class="nav-item">
+          <a class="nav-link" href="../clientes/clientes.php">
             <i class="fas fa-fw fa-user-alt"></i>
             <span>Clientes</span></a>
         </li>
@@ -116,8 +117,8 @@ close_conexao($con);
             <i class="fas fa-fw fa-boxes"></i>
             <span>Estoque</span></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="../os/os.php">
+        <li class="nav-item active">
+          <a class="nav-link" href="os.php">
             <i class="fas fa-fw fa-tags"></i>
             <span>Ordens de Serviço</span></a>
         </li>
@@ -137,18 +138,19 @@ close_conexao($con);
             <li class="breadcrumb-item">
               <a href="index.html">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Clientes</li>
+            <li class="breadcrumb-item active">Ordens de Serviço</li>
           </ol>
 
-          <a class="btn btn-success" href="cadcli.php"> <i class="ion-plus-round"></i> Adicionar Cliente</a>
+          <a class="btn btn-success" href="cados.php"> <i class="ion-plus-round"></i> Adicionar Ordens de Serviço</a>
           <br>
           <br>
+          
           <!-- DataTables Example -->
           <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
           <div class="card mb-3">
             <div class="card-header">
-              <i class="fas fa-user-alt"></i>
-              Clientes</div>
+              <i class="fas fa-tags"></i>
+              Ordens de Serviço</div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -156,10 +158,12 @@ close_conexao($con);
                   <div class="row col-md-7">
           <table  class="table table-striped">
             <tr>
-             <th widht="300" align="right">Nome</th>
-             <th widht="80" align="right">Endereco</th>
-             <th widht="80" align="right">Telefone</th>
-             <th widht="80" align="center">CPF</th>
+             <th widht="80" align="right">#</th>
+             <th widht="80" align="right">Cliente</th>
+             <th widht="80" align="right">Defeito</th>
+             <th widht="80" align="center">Status</th>
+             <th widht="80" align="center">Equipamento</th>
+             <th widht="80" align="center">Entrada</th>
              <th widht="80" align="center"> </th>
 
              <th></th>
@@ -169,31 +173,33 @@ close_conexao($con);
            <tr>
              
 
+            <td><?php echo $row['idos'] ?></td>
             <td><?php echo $row['nome'] ?></td>
-            <td><?php echo $row['rua'] ?></td>
-            <td><?php echo $row['telefone'] ?></td>
-            <td><?php echo $row['cpf'] ?></td>
+            <td><?php echo $row['defeito'] ?></td>
+            <td><?php echo $row['descricaosta'] ?></td>
+            <td><?php echo $row['tipoeqp'] ?></td>
+            <td><?php echo $row['dataentrada'] ?></td>
 
             <td>
-              <button type="button" class="btn btn-warning" title="Editar cliente"
-              onclick="javascript:location.href='editCli.php?id=' 
-              + <?php echo $row['id'] ?> ">
+              <button type="button" class="btn btn-warning" title="Editar OS"
+              onclick="javascript:location.href='editos.php?idos=' 
+              + <?php echo $row['idos'] ?> ">
               <span class="ion-edit" aria-hidden="true"></span>
             </button>                 
           </td>  
 
             <td>
-              <button type="button" class="btn btn-info" title="Visualizar cliente"
-              onclick="javascript:location.href='visucli.php?id=' 
-              + <?php echo $row['id'] ?> ">
+              <button type="button" class="btn btn-info" title="Visualizar OS"
+              onclick="javascript:location.href='visualizarOs.php?idos=' 
+              + <?php echo $row['idos'] ?> ">
               <span class="ion-eye" aria-hidden="true"></span>
             </button>                 
           </td>  
 
           <td>
-            <button type="button" class="btn btn-danger" title="Remover cliente"
-            onclick="javascript:location.href='removCli.php?id=' 
-            + <?php echo $row['id'] ?> ">
+            <button type="button" class="btn btn-danger" title="Deletar OS"
+            onclick="javascript:location.href='removOS.php?idos=' 
+            + <?php echo $row['idos'] ?> ">
             <span class="ion-trash-a" aria-hidden="true"></span>
           </button>                 
         </td>                    

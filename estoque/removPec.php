@@ -1,14 +1,24 @@
 <?php
-  //verifica sessão, se está logado 
-//session_start();
-//if (!isset($_SESSION['user'])) //AND (!isset($_SESSION[nome])) ) 
-//Header("Location: index.html");
+require_once '../conexao.php'; 
 
-require_once '../conexao.php';
-$con = open_conexao();
-$rs = mysqli_query($con,"select * from clientes;"); //rs=record set (conjunto de registros)
-close_conexao($con);
+$con = open_conexao(); 
+//selectDb(); 
+   //recuperar valor passado por get
+$id = trim($_REQUEST['id']);
+    //buscar no banco de dados
+$rs = mysqli_query($con, "select * from estoque WHERE id=".$id);
+
+$row = mysqli_fetch_array($rs); 
+$desc = $row['descricao']; 
+$comp = $row['precocompra'];
+$vend = $row['precovenda']; 
+$qtd = $row['quantidade'];
+
+close_conexao($con); 
+
 ?>
+
+<!DOCTYPE html>
 <html lang="en">
 
   <head>
@@ -19,7 +29,7 @@ close_conexao($con);
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin - Tables</title>
+    <title>Sistema - Nucci</title>
 
     <!-- Bootstrap core CSS-->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -106,13 +116,13 @@ close_conexao($con);
             <span>Dashboard</span>
           </a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="clientes.php">
+        <li class="nav-item">
+          <a class="nav-link" href="../clientes/clientes.php">
             <i class="fas fa-fw fa-user-alt"></i>
             <span>Clientes</span></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="../estoque/estoque.php">
+        <li class="nav-item active">
+          <a class="nav-link" href="estoque.php">
             <i class="fas fa-fw fa-boxes"></i>
             <span>Estoque</span></a>
         </li>
@@ -137,70 +147,46 @@ close_conexao($con);
             <li class="breadcrumb-item">
               <a href="index.html">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Clientes</li>
+            <li class="breadcrumb-item">
+              <a href="estoque.php">Estoque</a>
+            </li>
+            <li class="breadcrumb-item active">Excluir Peça</li>
           </ol>
 
-          <a class="btn btn-success" href="cadcli.php"> <i class="ion-plus-round"></i> Adicionar Cliente</a>
-          <br>
-          <br>
+
           <!-- DataTables Example -->
-          <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+          <form data-toggle="validator" method="post" action="valRemPec.php">
           <div class="card mb-3">
             <div class="card-header">
               <i class="fas fa-user-alt"></i>
-              Clientes</div>
+              Excluir Peça</div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
-                  <div class="row col-md-7">
-          <table  class="table table-striped">
-            <tr>
-             <th widht="300" align="right">Nome</th>
-             <th widht="80" align="right">Endereco</th>
-             <th widht="80" align="right">Telefone</th>
-             <th widht="80" align="center">CPF</th>
-             <th widht="80" align="center"> </th>
 
-             <th></th>
-             <th></th>
-           </tr>
-           <?php while ($row = mysqli_fetch_array($rs)) { ?> 
-           <tr>
-             
+                  <input type="hidden" name="id"  value="<?php echo $id?>">
+                  
+                  <div class="col-sm-4">
+                      <label>Descrição</label>
+                      <input type="text" class="form-control" name="idDesc" value="<?php echo $desc?>" disabled>
+                    </div>
 
-            <td><?php echo $row['nome'] ?></td>
-            <td><?php echo $row['rua'] ?></td>
-            <td><?php echo $row['telefone'] ?></td>
-            <td><?php echo $row['cpf'] ?></td>
-
-            <td>
-              <button type="button" class="btn btn-warning" title="Editar cliente"
-              onclick="javascript:location.href='editCli.php?id=' 
-              + <?php echo $row['id'] ?> ">
-              <span class="ion-edit" aria-hidden="true"></span>
-            </button>                 
-          </td>  
-
-            <td>
-              <button type="button" class="btn btn-info" title="Visualizar cliente"
-              onclick="javascript:location.href='visucli.php?id=' 
-              + <?php echo $row['id'] ?> ">
-              <span class="ion-eye" aria-hidden="true"></span>
-            </button>                 
-          </td>  
-
-          <td>
-            <button type="button" class="btn btn-danger" title="Remover cliente"
-            onclick="javascript:location.href='removCli.php?id=' 
-            + <?php echo $row['id'] ?> ">
-            <span class="ion-trash-a" aria-hidden="true"></span>
-          </button>                 
-        </td>                    
-      </tr>
-      <?php 
-    } ?>
-           
+                    <div class="col-sm-4">
+                        <label>Preço de compra</label>
+                        <input type="text" class="form-control" name="idComp" value="<?php echo $comp?>" disabled>
+                      </div>
+                      <div class="col-sm-4">
+                        <label>Preço de venda</label>
+                        <input type="text" class="form-control" name="idVend" value="<?php echo $vend?>" disabled>
+                      </div>
+                      <div class="col-sm-4">
+                        <label>Quantidade</label>
+                        <input type="text" class="form-control" name="idQtd" value="<?php echo $qtd?>" disabled>
+                      </div>
+                      <br>
+                      <input type="submit" class="btn btn-outline-danger" value="Excluir"/>
+                    </form>
                   </tbody>
                 </table>
               </div>
@@ -213,7 +199,16 @@ close_conexao($con);
         </div>
         <!-- /.container-fluid -->
 
+        <!-- Sticky Footer -->
+        <footer class="sticky-footer">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>Copyright © Studio BlueMind 2018</span>
+            </div>
+          </div>
+        </footer>
 
+      </div>
       <!-- /.content-wrapper -->
 
     </div>
