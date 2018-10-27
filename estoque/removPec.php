@@ -159,7 +159,7 @@ close_conexao($con);
           <div class="card mb-3">
             <div class="card-header">
               <i class="fas fa-user-alt"></i>
-              Adicionar Peça</div>
+              Excluir Peça</div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

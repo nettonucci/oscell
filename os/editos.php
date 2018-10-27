@@ -40,7 +40,6 @@ $con = open_conexao();
 $query = mysqli_query($con,"select * from estoque;");
 $rs1 = mysqli_query($con,"SELECT * FROM maoobra INNER JOIN os ON (maoobra.idos = os.idos) WHERE os.idos =".$id); //rs=record set (conjunto de registros)
 $rs2 = mysqli_query($con,"SELECT * FROM ospeca INNER JOIN os ON (ospeca.idos = os.idos) INNER JOIN estoque ON(ospeca.idpeca = estoque.id) WHERE os.idos=".$id); //rs=record set (conjunto de registros)
-close_conexao($con);
 ?>
 
 <!DOCTYPE html>
@@ -352,7 +351,7 @@ close_conexao($con);
                       </tr>
                       <?php while ($row = mysqli_fetch_array($rs2)) { ?> 
                       <tr>
-             
+                        
                       <td><?php echo $row['descricao'] ?></td>
                       <td><?php echo $row['quantidadeos'] ?></td>
                       <td>R$<?php echo $row['precovenda'] ?>,00</td>
@@ -361,9 +360,9 @@ close_conexao($con);
                         ?>
 
                        <td>
-                          <button type="button" class="btn btn-danger" title="Deletar Peça"
-                          onclick="javascript:location.href='../remover/remCli.php?id=' 
-                          + <?php echo $row['id'] ?> ">
+                       <button type="button" class="btn btn-danger" title="Deletar OS"
+                          onclick="javascript:location.href='removPecOs.php?id=' 
+                          + <?php echo $row['idd'] ?> ">
                           <span class="ion-trash-a" aria-hidden="true"></span>
                           </button>                 
                       </td>                    
@@ -378,6 +377,8 @@ close_conexao($con);
                       
                       </div>
                       </table>
+                        
+                      
 
                         <hr>
                         <h4>

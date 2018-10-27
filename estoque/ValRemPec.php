@@ -5,7 +5,7 @@
   
    if (!empty($id)){
       $con = open_conexao(); 
-      $sql = "DELETE FROM estoque WHERE id='$id';";
+      $sql = "DELETE FROM estoque WHERE idd='$id';";
 
       $rem = mysqli_query($con,$sql); 
       close_conexao($con); 

@@ -6,13 +6,14 @@ $con = open_conexao();
    //recuperar valor passado por get
 $id = trim($_REQUEST['id']);
     //buscar no banco de dados
-$rs = mysqli_query($con, "select * from estoque WHERE id=".$id);
-
+$rs = mysqli_query($con,"SELECT * FROM ospeca INNER JOIN estoque ON(ospeca.idpeca = estoque.id) WHERE ospeca.idd=".$id);
 $row = mysqli_fetch_array($rs); 
-$desc = $row['descricao']; 
-$comp = $row['precocompra'];
+$idd = $row['idd']; 
+$desc = $row['descricao'];
 $vend = $row['precovenda']; 
-$qtd = $row['quantidade'];
+$qtd = $row['quantidadeos'];
+$idos = $row['idos'];
+$idpeca = $row['idpeca'];
 
 close_conexao($con); 
 
@@ -121,13 +122,13 @@ close_conexao($con);
             <i class="fas fa-fw fa-user-alt"></i>
             <span>Clientes</span></a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="estoque.php">
+        <li class="nav-item">
+          <a class="nav-link" href="../estoque/estoque.php">
             <i class="fas fa-fw fa-boxes"></i>
             <span>Estoque</span></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="../os/os.php">
+        <li class="nav-item active">
+          <a class="nav-link" href="os.php">
             <i class="fas fa-fw fa-tags"></i>
             <span>Ordens de Serviço</span></a>
         </li>
@@ -145,47 +146,49 @@ close_conexao($con);
           <!-- Breadcrumbs-->
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
-              <a href="index.html">Dashboard</a>
+              <a href="../index.html">Dashboard</a>
             </li>
             <li class="breadcrumb-item">
-              <a href="estoque.php">Estoque</a>
+              <a href="os.php">Os</a>
             </li>
-            <li class="breadcrumb-item active">Atualizar Peça</li>
+            <li class="breadcrumb-item">
+              <a href="os.php">Editar os</a>
+            </li>
+            <li class="breadcrumb-item active">Excluir Peça da OS</li>
           </ol>
 
 
           <!-- DataTables Example -->
-          <form data-toggle="validator" method="post" action="valAlterPec.php">
+          <form data-toggle="validator" method="post" action="ValRemPecOS.php">
           <div class="card mb-3">
             <div class="card-header">
               <i class="fas fa-user-alt"></i>
-              Editar Peça</div>
+              Excluir Peça da OS</div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
 
-                    <input type="hidden" name="id"  value="<?php echo $id?>">
-
+                  <input type="hidden" name="id"  value="<?php echo $id?>">
+                  <input type="hidden" name="idos"  value="<?php echo $idos?>">
+                  <input type="hidden" name="idpeca"  value="<?php echo $idpeca?>">
+                  <input type="hidden" name="idqtd"  value="<?php echo $qtd?>">
+                  
                   <div class="col-sm-4">
                       <label>Descrição</label>
-                      <input type="text" class="form-control" name="idDesc" value="<?php echo $desc?>">
+                      <input type="text" class="form-control" name="idDesc" value="<?php echo $desc?>" disabled>
                     </div>
 
-                    <div class="col-sm-4">
-                        <label>Preço de compra</label>
-                        <input type="text" class="form-control" name="idComp" value="<?php echo $comp?>">
-                      </div>
                       <div class="col-sm-4">
-                        <label>Preço de venda</label>
-                        <input type="text" class="form-control" name="idVend" value="<?php echo $vend?>">
+                        <label>Preço</label>
+                        <input type="text" class="form-control" name="idVend" value="<?php echo $vend?>" disabled>
                       </div>
                       <div class="col-sm-4">
                         <label>Quantidade</label>
-                        <input type="text" class="form-control" name="idQtd" value="<?php echo $qtd?>">
+                        <input type="text" class="form-control" name="quantidade" value="<?php echo $qtd?>" disabled>
                       </div>
                       <br>
-                      <input type="submit" class="btn btn-outline-success" value="Atualizar"/>
+                      <input type="submit" class="btn btn-outline-danger" value="Excluir"/>
                     </form>
                   </tbody>
                 </table>

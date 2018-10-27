@@ -156,6 +156,7 @@ close_conexao($con);
                   <div class="row col-md-7">
           <table  class="table table-striped">
             <tr>
+             <th widht="300" align="right">#</th>
              <th widht="300" align="right">Descrição</th>
              <th widht="80" align="right">Preço de Compra</th>
              <th widht="80" align="right">Preço de Venda</th>
@@ -167,7 +168,7 @@ close_conexao($con);
            <?php while ($row = mysqli_fetch_array($rs)) { ?> 
            <tr>
              
-
+            <td><?php echo $row['id'] ?></td>
             <td><?php echo $row['descricao'] ?></td>
             <td>R$<?php echo $row['precocompra'] ?>,00</td>
             <td>R$<?php echo $row['precovenda'] ?>,00</td>
