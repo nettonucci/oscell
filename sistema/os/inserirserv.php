@@ -12,7 +12,7 @@
 <body>
 
  <!-- Modal body -->
- <form data-toggle="validator" method="post" action="#">
+ <form data-toggle="validator" method="post" action="ValInsServ.php">
  <div class="modal-body">
  <div class="col-sm-4">
                       <label>Serviço realizado</label>
@@ -27,7 +27,7 @@
 
                     <!-- Modal footer -->
         <div class="modal-footer">
-          <input type="submit" class="btn btn-outline-success" value="Cadastrar"/>
+          <input type="submit" class="btn btn-outline-success" value="Inserir"/>
         </div>
         </div>
                           </form>

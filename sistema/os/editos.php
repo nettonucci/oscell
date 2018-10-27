@@ -192,7 +192,7 @@ close_conexao($con);
 
 
           <!-- DataTables Example -->
-          <form data-toggle="validator" method="post" action="ValInsPec.php">
+          <form data-toggle="validator" method="post" action="#">
           <div class="card mb-3">
             <div class="card-header"
               <i class="fas fa-tags"></i>
@@ -211,7 +211,7 @@ close_conexao($con);
               <a class="nav-item nav-link" id="nav-total-tab" data-toggle="tab" href="#nav-total" role="tab" aria-controls="nav-total" aria-selected="true">Total</a>
           </div>
           </nav>
-          <input type="hidden" name="idos"  value="<?php echo $idos?>">
+          <input type="hidden" name="idos" id="id"  value="<?php echo $idos?>">
           <div class="tab-content" id="nav-tabContent">
           <div class="tab-pane fade show active" id="nav-det" role="tabpanel" aria-labelledby="nav-home-tab">
                     <br>
@@ -273,8 +273,9 @@ close_conexao($con);
                   <br>
                     <div class="col-sm-4">
                       <label for="defeito">Laudo</label>
-                        <textarea class="span6" name="defeito" id="defeito" cols="150" rows="20"><?=$lau?></textarea>
+                        <textarea class="span6" name="idlaudo" id="idlaudo" cols="150" rows="20"><?=$lau?></textarea>
                     </div>
+                    
                     </div>
 
 
@@ -282,12 +283,12 @@ close_conexao($con);
                    <br>
                    <div class="col-sm-4">
                     <!-- Button to Open the Modal -->
-                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal3">
                     	Inserir Peça
                      </button>
 
                        <!-- The Modal -->
-                     <div class="modal fade" id="myModal">
+                     <div class="modal fade" id="myModal3">
                      <div class="modal-dialog modal-lg">
                      <div class="modal-content">
       
@@ -388,6 +389,7 @@ close_conexao($con);
                      <!-- Modal body -->
                      <?php
                     include "inserirserv.php";
+                    
                      ?>
         
         
@@ -479,6 +481,7 @@ close_conexao($con);
                         ?>
                         </h3>
                     </div>
+
                   <br>
                     </form>
                   </tbody>
